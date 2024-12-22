@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
-import store from "./app/store";
+import store from './app/store';
 import { setUser } from './features/user/userSlice';
 import toast, { Toaster } from 'react-hot-toast';
 import routes from "./routes/routes";
