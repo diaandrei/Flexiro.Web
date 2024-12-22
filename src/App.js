@@ -1,6 +1,4 @@
-// src/App.js
 import React, { useEffect, useState } from "react";
-
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
@@ -11,8 +9,8 @@ import routes from "./routes/routes";
 import GlobalNotification from './GlobalNotification';
 import { Box } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
-import { SearchProvider } from './context/SearchContext';
-import { UserProvider } from "./context/UserContext";
+import { SearchProvider } from './context/searchContext';
+import { UserProvider } from "./context/userContext";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
