@@ -1,4 +1,3 @@
-// src/features/productDetailSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchProductDetails } from '../../features/product-detail/productDetailsApi';
 
