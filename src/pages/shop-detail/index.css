@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+}
+
+.grid-view,
+.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.list-view-productcard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.grid-view-productcard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+button:focus {
+  outline: none;
+}
+
+button svg:hover {
+  transform: scale(1.1);
+}
