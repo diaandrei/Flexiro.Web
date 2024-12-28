@@ -5,7 +5,7 @@ import CustomFooter from "../footer/CustomFooter";
 import routes from "../../routes/routes";
 import GlobalNotification from "../../GlobalNotification";
 import { Box } from "@mui/material";
-import { SearchProvider } from "../../context/SearchContext";
+import { SearchProvider } from "../../context/searchContext";
 
 const CustomerLayout = ({ children }) => {
   return (

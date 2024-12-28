@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchProductDetails } from "../../features/product-detail/ProductDetailsApi";
+import { fetchProductDetails } from "../../features/product-detail/productDetailsApi";
 import {
   Box,
   Typography,

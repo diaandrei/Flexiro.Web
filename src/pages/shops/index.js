@@ -11,7 +11,7 @@ import ImageCarousel from './ImageCarousel';
 import bannerImage from './BannerImg.jpg';
 import CustomLoader from '../../CustomLoader';
 import GlobalNotification from '../../GlobalNotification';
-import { useSearch } from '../../context/SearchContext';
+import { useSearch } from '../../context/searchContext';
 import { Link } from 'react-router-dom';
 import { toast, Bounce } from 'react-toastify';
 const ITEMS_PER_PAGE = 12;
