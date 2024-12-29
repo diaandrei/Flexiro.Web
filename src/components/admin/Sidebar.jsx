@@ -23,7 +23,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { setUser } from "../../features/user/userSlice";
-import logo from "../Images/flex.png";
+import logo from "../images/flex.png";
 import { logOutUser } from "../../features/user/userSlice";
 
 const drawerWidth = 280;

@@ -5,7 +5,7 @@ import { Box, CssBaseline } from "@mui/material";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import GlobalNotification from "../../GlobalNotification";
-import { SearchProvider } from "../../context/SearchContext";
+import { SearchProvider } from "../../context/searchContext";
 
 const SellerLayout = ({ children }) => {
   return (

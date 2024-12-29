@@ -10,7 +10,7 @@ import {
 import {
   signInUser,
   selectAuthError,
-} from "../../features/sign-in/signinSlice";
+} from "../../features/sign-in/signInSlice";
 import CustomLoader from "../../CustomLoader";
 import GlobalNotification from "../../GlobalNotification";
 import { useNavigate } from "react-router-dom";

@@ -25,7 +25,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
-import logo from "../Images/flex.png";
+import logo from "../images/flex.png";
 import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 280;

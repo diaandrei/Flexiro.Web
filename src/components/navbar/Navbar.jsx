@@ -21,8 +21,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CartIcon from "../cart-icon/CartIcon";
 import logoImage from "./flexiro.svg";
 import UserMenu from "./UserMenu";
-import { useSearch } from "../context/searchContext";
-import { useUser } from "../context/userContext";
+import { useSearch } from "../../context/searchContext";
+import { useUser } from "../../context/userContext";
 
 function Navbar() {
   const { searchQuery, setSearchQuery } = useSearch();
