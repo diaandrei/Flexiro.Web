@@ -86,7 +86,7 @@ export default function ProductDetail() {
         height="60vh"
       >
         <Typography color="error">
-          {error || "Failed to load product"}
+          {error || "Failed to load product. Please try again."}
         </Typography>
       </Box>
     );
@@ -260,7 +260,7 @@ export default function ProductDetail() {
                     variant={isMobile ? "h5" : "h4"}
                     sx={{ fontWeight: 600, color: "#262C36" }}
                   >
-                    $
+                    £
                     {(
                       product.pricePerItem *
                       (1 - product.discountPercentage / 100)
@@ -274,7 +274,7 @@ export default function ProductDetail() {
                       color: "text.secondary",
                     }}
                   >
-                    ${product.pricePerItem.toFixed(2)}
+                    £{product.pricePerItem.toFixed(2)}
                   </Typography>
                   <Typography
                     color="error"
@@ -291,7 +291,7 @@ export default function ProductDetail() {
                   variant={isMobile ? "h5" : "h4"}
                   sx={{ fontWeight: 600 }}
                 >
-                  ${product.pricePerItem.toFixed(2)}
+                  £{product.pricePerItem.toFixed(2)}
                 </Typography>
               )}
             </Box>

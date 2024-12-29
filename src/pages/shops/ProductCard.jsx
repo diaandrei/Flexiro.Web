@@ -55,10 +55,10 @@ const ProductCard = ({ product }) => (
           variant="body2"
           sx={{ textDecoration: "line-through", mr: 1 }}
         >
-          ${product.originalPrice}
+          £{product.originalPrice}
         </Typography>
         <Typography variant="h6" color="primary" sx={{ fontWeight: "bold" }}>
-          ${product.discountedPrice}
+          £{product.discountedPrice}
         </Typography>
       </Box>
       <Box mt={2}>
