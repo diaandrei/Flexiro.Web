@@ -55,8 +55,6 @@ function Navbar() {
     }
   };
 
-  const navItems = [{ title: "Shops", path: "/" }];
-
   return (
     <AppBar
       position="static"
@@ -127,25 +125,6 @@ function Navbar() {
             justifyContent: "flex-end",
           }}
         >
-          {!isMobile && (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}>
-              {navItems.map((item) => (
-                <Button
-                  key={item.title}
-                  component={NavLink}
-                  to={item.path}
-                  sx={{
-                    color: "inherit",
-                    display: "flex",
-                    alignItems: "center",
-                    "&.active": { fontWeight: "600" },
-                  }}
-                >
-                  {item.title}
-                </Button>
-              ))}
-            </Box>
-          )}
           <IconButton onClick={handleCartClick} color="grey">
             <CartIcon />
           </IconButton>
@@ -200,26 +179,7 @@ function Navbar() {
           anchor="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-        >
-          <List sx={{ width: 250 }}>
-            {navItems.map((item) => (
-              <ListItem
-                key={item.title}
-                button
-                component={NavLink}
-                to={item.path}
-                onClick={() => setDrawerOpen(false)}
-              >
-                <ListItemText primary={item.title} />
-              </ListItem>
-            ))}
-            {!userRole && (
-              <ListItem button onClick={handleRegisterClick}>
-                <ListItemText primary="Register Seller" />
-              </ListItem>
-            )}
-          </List>
-        </Drawer>
+        ></Drawer>
       </Toolbar>
     </AppBar>
   );

@@ -221,7 +221,7 @@ const Dashboard = () => {
                   {shop.shopDescription}
                 </Typography>
               </TableCell>
-              <TableCell>$ {shop.totalEarnings}</TableCell>
+              <TableCell>£ {shop.totalEarnings}</TableCell>
               <TableCell>{shop.totalOrders}</TableCell>
               <TableCell>
                 <Chip

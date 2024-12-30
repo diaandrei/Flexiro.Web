@@ -10,12 +10,6 @@ const CompanyInfo = () => (
       href="/"
       sx={{ color: "white", textDecoration: "none", display: "block", mt: 1 }}
     >
-      Shops
-    </Link>
-    <Link
-      href="/"
-      sx={{ color: "white", textDecoration: "none", display: "block", mt: 1 }}
-    >
       Flash Sales
     </Link>
   </Box>

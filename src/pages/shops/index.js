@@ -34,7 +34,6 @@ const Shops = () => {
       try {
         await dispatch(getShopItems()).unwrap();
       } catch (error) {
-
       }
     };
 

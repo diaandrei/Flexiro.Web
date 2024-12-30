@@ -62,22 +62,11 @@ const styles = {
 const CustomFooter = () => {
   const { socialMediaLinks = [] } = contactData || {};
 
-  const navLinks = [{ title: "Shops", href: "/" }];
-
   return (
     <Box sx={styles.footer}>
       <Container maxWidth="lg" sx={styles.container}>
         <Box sx={styles.topSection}>
           <img src={logoImage} alt="Logo" style={styles.logo} />
-
-          <Stack direction="row" sx={styles.nav}>
-            {navLinks.map((link) => (
-              <Link key={link.title} href={link.href} sx={styles.navLink}>
-                {link.title}
-              </Link>
-            ))}
-          </Stack>
-
           <Box sx={styles.socialIcons}>
             {socialMediaLinks.map((link, index) => (
               <IconButton

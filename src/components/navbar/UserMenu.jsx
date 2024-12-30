@@ -72,7 +72,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
             sx={{ justifyContent: "flex-start", padding: "10px 16px" }}
           >
             <Typography variant="body1" sx={{ flexGrow: 1 }}>
-              Login
+              Log In
             </Typography>
           </MenuItem>
         )}
