@@ -183,7 +183,7 @@ export default function ProductCard({
             variant="h6"
             sx={{ fontWeight: "bold", color: "#262C36" }}
           >
-            ${price.toFixed(2)}
+            £{price.toFixed(2)}
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button

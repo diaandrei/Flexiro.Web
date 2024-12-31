@@ -14,7 +14,6 @@ export const UserProvider = ({ children }) => {
 
     // Watch for localStorage changes
     useEffect(() => {
-        // Handler for storage events (other tabs)
         const handleStorageChange = (e) => {
             if (e.key === "role") {
                 setUserRole(e.newValue);
