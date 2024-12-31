@@ -10,7 +10,6 @@ export const getCart = async (userId) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching cart items:", error);
     throw error;
   }
 };
