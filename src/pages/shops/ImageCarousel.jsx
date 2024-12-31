@@ -20,10 +20,8 @@ const ImageCarousel = ({ topRated = [] }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // Ensure we have a valid default if topRated is empty
   const visibleProducts = isMobile ? 1 : 3;
 
-  // Improved navigation logic
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex > 0
@@ -34,13 +32,11 @@ const ImageCarousel = ({ topRated = [] }) => {
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => {
-      // Calculate maximum possible index
       const maxIndex = Math.max(0, topRated.length - visibleProducts);
       return prevIndex < maxIndex ? prevIndex + 1 : 0;
     });
   };
 
-  // Auto-sliding effect
   useEffect(() => {
     if (topRated.length <= visibleProducts) return;
 

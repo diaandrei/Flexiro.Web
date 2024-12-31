@@ -14,6 +14,7 @@ import GlobalNotification from '../../GlobalNotification';
 import { useSearch } from '../../context/searchContext';
 import { Link } from 'react-router-dom';
 import { toast, Bounce } from 'react-toastify';
+
 const ITEMS_PER_PAGE = 12;
 
 const Shops = () => {
