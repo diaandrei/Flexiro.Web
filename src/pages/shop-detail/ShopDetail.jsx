@@ -94,7 +94,7 @@ export default function ShopDetail() {
         minHeight="70vh"
       >
         <Typography variant="h4" gutterBottom>
-          No products in this shop
+          No products available right now. Please check back later
         </Typography>
         <Button
           variant="contained"
@@ -108,7 +108,7 @@ export default function ShopDetail() {
             },
           }}
         >
-          Go to Home
+          Go back Home
         </Button>
       </Box>
     );
@@ -177,6 +177,7 @@ export default function ShopDetail() {
               ),
             }}
           />
+
           <FormControl
             variant="outlined"
             sx={{
@@ -204,6 +205,7 @@ export default function ShopDetail() {
               <MenuItem value="PriceHighLow">Price: High to Low</MenuItem>
             </Select>
           </FormControl>
+
           {!isMobile && (
             <Button
               onClick={toggleViewType}
@@ -259,6 +261,7 @@ export default function ShopDetail() {
           </Grid>
         ))}
       </Grid>
+
       <Box
         sx={{
           display: "flex",

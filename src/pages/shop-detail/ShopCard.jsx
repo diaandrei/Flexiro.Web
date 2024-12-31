@@ -204,6 +204,7 @@ export default function ProductCard({
                 }}
               />
             </Button>
+
             <Button
               variant="contained"
               onClick={onClick}
