@@ -29,10 +29,10 @@ api.interceptors.response.use(
       localStorage.setItem("token", response.data?.content?.token);
     }
     if (response.data?.content?.id) {
-      localStorage.setItem("userId", response.data.content.id); // Storing userId
+      localStorage.setItem("userId", response.data.content.id); 
     }
     if (response.data?.content?.role) {
-      localStorage.setItem("role", response.data.content.role); // Storing userId
+      localStorage.setItem("role", response.data.content.role);
     }
     return response;
   },
