@@ -357,11 +357,11 @@ export default function SellerAddProduct() {
                   type="number"
                   value={formData.price}
                   onChange={handleChange}
-                  placeholder="USD"
+                  placeholder="GBP"
                   error={!!errors.price}
                   helperText={errors.price}
                   InputProps={{
-                    startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                    startAdornment: <Typography sx={{ mr: 1 }}>£</Typography>,
                   }}
                   required
                 />
