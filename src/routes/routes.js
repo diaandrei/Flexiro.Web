@@ -6,25 +6,41 @@ import SignUp from "../pages/users/sign-up/SignUpForm";
 import ShopDetail from "../pages/shop-detail/ShopDetail";
 import ProductDetail from "../pages/product-detail/ProductDetail";
 import Login from "../pages/users/sign-in/SignInForm";
+import CartCheckout from "../pages/cart-checkout/CartCheckout";
+import Payment from "../pages/payment/Payment";
+import Confirmation from "../pages/payment/Confirmation";
+import Dashboard from "../pages/admin/Dashboard";
+import SellerDashboard from "../pages/seller/SellerDashboard";
+import ShippingDetails from "../pages/shipping-details/ShippingDetails";
+import NotFound from "../pages/not-found/NotFoundPage";
 import AdminLayout from "../components/admin/AdminLayout";
 import CustomerLayout from "../components/customer/CustomerLayout";
+import RequireAuth from "../components/auth/RequireAuth";
 import AdminSignIn from "../components/admin/AdminSignIn";
+import SellerSignIn from "../components/seller/SellerSignIn";
+import SellerLayout from "../components/seller/SellerLayout";
+import SellerProductPage from "../pages/seller/SellerProducts";
+import SellerSettings from "../pages/seller/settings";
+import RegisterSeller from "../pages/seller/RegisterSellerForm";
+import OrderSummary from "../pages/order/OrderSummary";
+import SellerAddProduct from "../pages/seller/SellerAddProduct";
+import SellerOrders from "../pages/seller/ShopOrder";
+import SellerWishlist from '../pages/seller/sellerWishlist';
+import CustomerOrders from '../pages/order/customerOrder';
 import WishlistPage from '../pages/user-wishlist/WishlistPage';
 import useAuth from "../useAuth";
 
 const CustomerPrivateRoute = ({ children }) => {
-  const isAuthenticated = useAuth(); // Check if the user is authenticated
-  const role = localStorage.getItem("role"); // Get the user's role from localStorage
+  const isAuthenticated = useAuth(); 
+  const role = localStorage.getItem("role");
 
-  // If the user is not authenticated, redirect to login page
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  return children;
+  return children; 
 };
 const PrivateRoute = ({ children, roleRequired }) => {
-  const isAuthenticated = useAuth(); 
+  const isAuthenticated = useAuth();
   const role = localStorage.getItem("role");
 
   if (!isAuthenticated) {
@@ -32,11 +48,10 @@ const PrivateRoute = ({ children, roleRequired }) => {
   }
 
   if (role !== roleRequired) {
-    return <Navigate to="/" replace />; 
+    return <Navigate to="/" replace />;
   }
 
-    return children; 
-    
+  return children; 
 };
 const SellerPrivateRoute = ({ children }) => {
   const isAuthenticated = useAuth();
@@ -47,7 +62,7 @@ const SellerPrivateRoute = ({ children }) => {
   }
 
   if (role !== "Seller") {
-    return <Navigate to="/" replace />; 
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -62,6 +77,7 @@ const routes = [
       { path: "/signup", element: <SignUp />, title: "Sign Up" },
       {
         path: "/registerseller",
+        element: <RegisterSeller />,
         title: "Register Seller",
       },
       { path: "/shop/:id", element: <ShopDetail />, title: "Shop Detail" },
@@ -74,6 +90,8 @@ const routes = [
         path: "/checkout",
         element: (
           <CustomerPrivateRoute>
+            {" "}
+            <CartCheckout />
           </CustomerPrivateRoute>
         ),
         title: "Cart Checkout",
@@ -82,6 +100,8 @@ const routes = [
         path: "/payment",
         element: (
           <CustomerPrivateRoute>
+            {" "}
+            <Payment />{" "}
           </CustomerPrivateRoute>
         ),
         title: "Payment",
@@ -90,6 +110,8 @@ const routes = [
         path: "/confirmation",
         element: (
           <CustomerPrivateRoute>
+            {" "}
+            <Confirmation />{" "}
           </CustomerPrivateRoute>
         ),
         title: "Confirmation",
@@ -99,6 +121,7 @@ const routes = [
         element: (
           <CustomerPrivateRoute>
             {" "}
+            <ShippingDetails />
           </CustomerPrivateRoute>
         ),
         title: "Shipping Details",
@@ -118,6 +141,7 @@ const routes = [
         element: (
           <CustomerPrivateRoute>
             {" "}
+            <OrderSummary />
           </CustomerPrivateRoute>
         ),
         title: "Customer Section",
@@ -127,6 +151,7 @@ const routes = [
         element: (
           <CustomerPrivateRoute>
             {" "}
+            <CustomerOrders />
           </CustomerPrivateRoute>
         ),
         title: "Order History",
@@ -153,12 +178,14 @@ const routes = [
     ),
     children: [
       { index: true, element: <Navigate to="/Admin/dashboard" replace /> },
+      { path: "dashboard", element: <Dashboard />, title: "Admin Dashboard" },
     ],
   },
   {
     path: "/seller",
     element: (
       <SellerPrivateRoute roleRequired="Seller">
+        <SellerLayout />
       </SellerPrivateRoute>
     ),
     children: [
@@ -167,6 +194,7 @@ const routes = [
         path: "dashboard",
         element: (
           <SellerPrivateRoute>
+            <SellerDashboard />
           </SellerPrivateRoute>
         ),
         title: "Seller Dashboard",
@@ -175,6 +203,8 @@ const routes = [
         path: "products",
         element: (
           <SellerPrivateRoute>
+            {" "}
+            <SellerProductPage />
           </SellerPrivateRoute>
         ),
         title: "Seller Product Page",
@@ -183,6 +213,8 @@ const routes = [
         path: "settings",
         element: (
           <SellerPrivateRoute>
+            {" "}
+            <SellerSettings />
           </SellerPrivateRoute>
         ),
         title: "Seller Product Page",
@@ -191,6 +223,7 @@ const routes = [
         path: "addproduct",
         element: (
           <SellerPrivateRoute>
+            <SellerAddProduct />
           </SellerPrivateRoute>
         ),
         title: "Add New Product",
@@ -199,6 +232,7 @@ const routes = [
         path: "orders",
         element: (
           <SellerPrivateRoute>
+            <SellerOrders />
           </SellerPrivateRoute>
         ),
         title: "Shop Orders",
@@ -208,6 +242,7 @@ const routes = [
         path: "wishlistproducts",
         element: (
           <SellerPrivateRoute>
+            <SellerWishlist />
           </SellerPrivateRoute>
         ),
         title: "Wishlist Products",
@@ -217,6 +252,7 @@ const routes = [
 
   {
     path: "*",
+    element: <NotFound />,
     title: "Not Found",
   },
 ];

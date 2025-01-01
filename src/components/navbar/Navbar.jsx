@@ -48,15 +48,12 @@ function Navbar() {
   };
 
   const handleSwitchDashboard = () => {
-    debugger;
     if (userRole === "Admin") {
       navigate("/Admin/dashboard");
     } else if (userRole === "Seller") {
       navigate("/Seller/dashboard");
     }
   };
-
-  const navItems = [{ title: "Shops", path: "/" }];
 
   return (
     <AppBar
@@ -103,7 +100,7 @@ function Navbar() {
         >
           <TextField
             variant="outlined"
-            placeholder="Search Shops..."
+            placeholder="Search..."
             size="small"
             value={searchQuery}
             onChange={handleSearch}
@@ -130,21 +127,7 @@ function Navbar() {
         >
           {!isMobile && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}>
-              {navItems.map((item) => (
-                <Button
-                  key={item.title}
-                  component={NavLink}
-                  to={item.path}
-                  sx={{
-                    color: "inherit",
-                    display: "flex",
-                    alignItems: "center",
-                    "&.active": { fontWeight: "600" },
-                  }}
-                >
-                  {item.title}
-                </Button>
-              ))}
+              {/* Removed the Shops Button */}
             </Box>
           )}
           <IconButton onClick={handleCartClick} color="grey">
@@ -207,17 +190,6 @@ function Navbar() {
           onClose={() => setDrawerOpen(false)}
         >
           <List sx={{ width: 250 }}>
-            {navItems.map((item) => (
-              <ListItem
-                key={item.title}
-                button
-                component={NavLink}
-                to={item.path}
-                onClick={() => setDrawerOpen(false)}
-              >
-                <ListItemText primary={item.title} />
-              </ListItem>
-            ))}
             {!userRole && (
               <ListItem button onClick={handleRegisterClick}>
                 <ListItemText primary="Register Seller" />

@@ -218,7 +218,9 @@ export default function SellerAddProduct() {
     } catch (error) {
       toast.error(
         `Error: ${
-          error.response?.data?.message || error.message || "Unknown error"
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to add product. Please try again."
         }`
       );
     } finally {

@@ -22,8 +22,8 @@ function NotFound() {
         Oops, Sorry!
       </Typography>
       <Typography variant="body1" color="text.secondary">
-        The product you are searching for is currently unavailable. Please try
-        using different keywords or browse other categories.
+        We couldn't find what you're looking for. Please try again or browse
+        other options.
       </Typography>
       <Button
         onClick={handleGoHome}
