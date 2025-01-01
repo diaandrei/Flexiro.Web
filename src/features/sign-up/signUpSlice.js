@@ -1,5 +1,3 @@
-// signUpSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { signUpAPI } from './signUpApi';
 import toast from 'react-hot-toast';

@@ -9,7 +9,6 @@ export const signInSeller = createAsyncThunk(
             const sellerData = await signInSellerApi({ email, password });
             return sellerData; // Return seller data if successful
         } catch (error) {
-
             toast.error(error.message);
 
             // Return error message if sign-in fails

@@ -1,5 +1,6 @@
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { postRequest } from "../../api/api";
+
 export const signUpAPI = async (userData) => {
   try {
     const response = await postRequest("/register", userData);

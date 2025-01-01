@@ -12,6 +12,7 @@ export const addToWishlistAsync = createAsyncThunk(
     }
   }
 );
+
 export const removeFromWishlistAsync = createAsyncThunk(
   'wishlist/removeFromWishlistAsync',
   async ({ productId, shopId }, { rejectWithValue }) => {
@@ -23,6 +24,7 @@ export const removeFromWishlistAsync = createAsyncThunk(
     }
   }
 );
+
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {

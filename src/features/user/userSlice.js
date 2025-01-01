@@ -34,7 +34,6 @@ const userSlice = createSlice({
             state.name = ''; // Clear name on logout
             state.email = ''; // Clear email on logout
             localStorage.clear();
-
         },
     },
 });

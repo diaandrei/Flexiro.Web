@@ -21,7 +21,6 @@ export const signInApi = async ({ email, password }) => {
         };
     }
     else {
-
         throw new Error(response.data.title);
     }
 

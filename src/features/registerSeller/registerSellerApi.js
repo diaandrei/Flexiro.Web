@@ -27,7 +27,6 @@ export const registerSellerAPI = async (sellerData) => {
         if (value === undefined || value === null) {
             throw new Error(`${key} is required`);
         }
-
         if (key === 'ShopLogo' && value instanceof File) {
             formData.append(key, value, value.name);
         } else if (key === 'OpeningDate' && value instanceof Date) {

@@ -9,7 +9,7 @@ export const fetchProductDetails = createAsyncThunk(
         `${API_ENDPOINT}/Customer/product/details/${productId}?userId=${userId}`
       );
       if (!response.ok) {
-        return rejectWithValue("Unable to Retrieve Product Information");
+        return rejectWithValue("Unable to retrieve Product Information");
       }
       const data = await response.json();
       return data;

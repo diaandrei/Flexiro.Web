@@ -10,7 +10,6 @@ export const fetchShopProducts = createAsyncThunk(
   "shopDetail/fetchShopProducts",
   async ({ shopId, userId }, { rejectWithValue }) => {
     try {
-     
       const response = await axios.get(
         `${API_ENDPOINT}/Customer/shops/${shopId}/products`,
         {
