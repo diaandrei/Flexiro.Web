@@ -27,6 +27,7 @@ export const NotificationProvider = ({ children }) => {
         const interval = setInterval(checkUserSession, 1000);
 
         return () => clearInterval(interval);
+        
     }, [currentUserId]);
 
     useEffect(() => {
