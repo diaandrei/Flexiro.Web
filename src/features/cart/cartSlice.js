@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { addItemToCart, removeItemFromCart, clearCartitems, updateCartItemQuantity } from '../cart/cartApi';
+import { getCartCount } from './cartCountSlice';
 import toast from 'react-hot-toast';
 
 export const addItem = createAsyncThunk(
   'cart/addItem',
-  async (item, { rejectWithValue }) => {
+  async (item, { dispatch, rejectWithValue }) => {
     try {
       const response = await addItemToCart(item);
       if (Array.isArray(response.items) && response.items.length > 0) {
@@ -15,7 +16,10 @@ export const addItem = createAsyncThunk(
           }
           return acc;
         }, 0);
-
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+          await dispatch(getCartCount(userId)).unwrap();
+        }
         return { items: response.items, totalQuantity };
       }
 
@@ -28,11 +32,15 @@ export const addItem = createAsyncThunk(
 
 export const updateItemQuantity = createAsyncThunk(
   'cart/updateItemQuantity',
-  async ({ cartItemId, quantity }, { rejectWithValue }) => {
+  async ({ cartItemId, quantity }, { dispatch, rejectWithValue }) => {
     try {
       const response = await updateCartItemQuantity(cartItemId, quantity);
       if (response) {
 
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+          await dispatch(getCartCount(userId)).unwrap();
+        }
         return response;
 
       }
@@ -45,9 +53,13 @@ export const updateItemQuantity = createAsyncThunk(
 
 export const removeItem = createAsyncThunk(
   'cart/removeItem',
-  async (cartItemId, { rejectWithValue }) => {
+  async (cartItemId, { dispatch, rejectWithValue }) => {
     try {
       const response = await removeItemFromCart(cartItemId);
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        await dispatch(getCartCount(userId)).unwrap();
+      }
       return response.request.status;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -80,7 +92,6 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Add Item
       .addCase(addItem.pending, (state) => {
         state.loading = true;
       })
@@ -94,7 +105,6 @@ const cartSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Update Item Quantity
       .addCase(updateItemQuantity.pending, (state) => {
         state.loading = true;
       })
@@ -105,18 +115,15 @@ const cartSlice = createSlice({
         const existingItemIndex = state.items.findIndex(item => item.cartItemId === updatedItem.cartItemId);
 
         if (existingItemIndex !== -1) {
-          // If the item exists, update its quantity and total price
           state.items[existingItemIndex] = {
             ...state.items[existingItemIndex],
             quantity: updatedItem.quantity,
             totalPrice: updatedItem.totalPrice,
           };
         } else {
-          // If the item doesn't exist, add it to the state
           state.items.push(updatedItem);
         }
 
-        // Update totalQuantity and other state values
         state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
         state.loading = false;
         state.error = null;
@@ -124,7 +131,7 @@ const cartSlice = createSlice({
       .addCase(updateItemQuantity.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
+      }) 
       .addCase(removeItem.pending, (state) => {
         state.loading = true;
       })

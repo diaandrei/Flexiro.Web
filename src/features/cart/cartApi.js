@@ -19,11 +19,10 @@ export const addItemToCart = async (item) => {
   const response = await postRequest(`/customer/add-product-to-cart?userId=${userId}`, requestPayload);
 
   if (response.request.status === 200) {
-    toast.success('Proudct added to cart');
+    toast.success('Your item has been added to the cart.');
     return response.data;
   } else {
     toast.error(response.data.title);
-
   }
 };
 
@@ -39,6 +38,7 @@ export const removeItemFromCart = async (cartItemId) => {
     throw new Error(response.data.title);
   }
 };
+
 export const updateCartItemQuantity = async (cartItemId, quantity) => {
   const userId = localStorage.getItem("userId");
   const response = await putRequest(`/customer/UpdateCartItemQuantity?cartItemId=${cartItemId}&quantity=${quantity}&userId=${userId}`);
@@ -56,7 +56,6 @@ export const updateCartItemQuantity = async (cartItemId, quantity) => {
       createdAt: response.data.data.createdAt,
       updatedAt: response.data.data.updatedAt
     };
-
       return responedata;
       
   }
