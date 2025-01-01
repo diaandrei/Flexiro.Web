@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
 const UserMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
 
@@ -13,10 +14,12 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
     navigate("/login"); // Navigate to login page
     handleClose(); // Close the menu
   };
+
   const handleOrders = () => {
     navigate("/customerorders"); // Navigate to login page
     handleClose(); // Close the menu
   };
+
   const handleWishlist = () => {
     navigate("/wishlistproducts"); // Navigate to login page
     handleClose(); // Close the menu
@@ -30,7 +33,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("name");
     localStorage.removeItem("email");
-    toast.success("Logout Success");
+    toast.success("You have successfully logged out.");
     navigate("/");
     handleClose();
   };
@@ -62,7 +65,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
             sx={{ justifyContent: "flex-start", padding: "10px 16px" }}
           >
             <Typography variant="body1" sx={{ flexGrow: 1 }}>
-              Logout
+              Log Out
             </Typography>
           </MenuItem>
         ) : (

@@ -23,6 +23,7 @@ import logoImage from "./flexiro.svg";
 import UserMenu from "./UserMenu";
 import { useSearch } from "../../context/searchContext";
 import { useUser } from "../../context/userContext";
+import NotificationIcon from "../notification-icon/NotificationIcon";
 
 function Navbar() {
   const { searchQuery, setSearchQuery } = useSearch();
@@ -35,7 +36,7 @@ function Navbar() {
   const [cartMenuOpen, setCartMenuOpen] = useState(null);
   const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
   const handleSearch = (e) => setSearchQuery(e.target.value);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -54,6 +55,8 @@ function Navbar() {
       navigate("/Seller/dashboard");
     }
   };
+
+  const navItems = [{ title: "Shops", path: "/" }];
 
   return (
     <AppBar
@@ -125,9 +128,30 @@ function Navbar() {
             justifyContent: "flex-end",
           }}
         >
+          {!isMobile && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.title}
+                  component={NavLink}
+                  to={item.path}
+                  sx={{
+                    color: "inherit",
+                    display: "flex",
+                    alignItems: "center",
+                    "&.active": { fontWeight: "600" },
+                  }}
+                >
+                  {item.title}
+                </Button>
+              ))}
+            </Box>
+          )}
           <IconButton onClick={handleCartClick} color="grey">
             <CartIcon />
           </IconButton>
+          {isLoggedIn && userRole === "Customer" && <NotificationIcon />}
+
           {userRole === "Admin" || userRole === "Seller" ? (
             <Button
               onClick={handleSwitchDashboard}
@@ -169,17 +193,38 @@ function Navbar() {
               <AccountCircle />
             </Avatar>
           </IconButton>
+
           <UserMenu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             handleClose={handleClose}
           />
         </Box>
+
         <Drawer
           anchor="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-        ></Drawer>
+        >
+          <List sx={{ width: 250 }}>
+            {navItems.map((item) => (
+              <ListItem
+                key={item.title}
+                button
+                component={NavLink}
+                to={item.path}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText primary={item.title} />
+              </ListItem>
+            ))}
+            {!userRole && (
+              <ListItem button onClick={handleRegisterClick}>
+                <ListItemText primary="Register Seller" />
+              </ListItem>
+            )}
+          </List>
+        </Drawer>
       </Toolbar>
     </AppBar>
   );
