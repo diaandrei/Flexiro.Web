@@ -126,9 +126,9 @@ function Navbar() {
           }}
         >
           {!isMobile && (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}>
-              {/* Removed the Shops Button */}
-            </Box>
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}
+            ></Box>
           )}
           <IconButton onClick={handleCartClick} color="grey">
             <CartIcon />
@@ -138,33 +138,43 @@ function Navbar() {
           {userRole === "Admin" || userRole === "Seller" ? (
             <Button
               onClick={handleSwitchDashboard}
-              variant="contained"
+              variant="outlined"
               sx={{
-                backgroundColor: "#4CAF50",
-                color: "white",
+                color: "#505050",
+                borderColor: "#808080",
                 fontWeight: "bold",
-                padding: { xs: "8px 16px", sm: "10px 20px" },
-                fontSize: { xs: "12px", sm: "14px" },
-                borderRadius: "50px",
+                padding: "6px 18px",
+                fontSize: "14px",
+                borderRadius: "25px",
                 textTransform: "none",
-                "&:hover": { backgroundColor: "#45A049" },
+                transition: "all 0.3s ease-in-out",
+                "&:hover": {
+                  backgroundColor: "#808080",
+                  color: "white",
+                  borderColor: "#808080",
+                },
               }}
             >
-              Switch to Dashboard
+              Dashboard
             </Button>
           ) : (
             <Button
               onClick={handleRegisterClick}
-              variant="contained"
+              variant="outlined"
               sx={{
-                backgroundColor: "#F38E58",
-                color: "white",
+                color: "#505050",
+                borderColor: "#808080",
                 fontWeight: "bold",
-                padding: { xs: "8px 16px", sm: "10px 20px" },
+                padding: "6px 18px",
                 fontSize: { xs: "12px", sm: "14px" },
-                borderRadius: "50px",
+                borderRadius: "25px",
                 textTransform: "none",
-                "&:hover": { backgroundColor: "white", color: "#F38E58" },
+                backgroundColor: "#808080",
+                "&:hover": {
+                  backgroundColor: "#808080",
+                  color: "white",
+                  borderColor: "#808080",
+                },
               }}
             >
               Register Seller

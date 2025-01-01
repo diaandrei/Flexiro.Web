@@ -10,7 +10,6 @@ export const fetchSellerDashboardData = async (shopId) => {
     );
     return response.data;
   } catch (error) {
-
     throw error;
   }
 };
@@ -22,14 +21,12 @@ export const fetchSellerProducts = async (shopId) => {
     );
     return response.data;
   } catch (error) {
-
     throw error;
   }
 };
 
 export const changeProductStatus = async (productId, newStatus) => {
   try {
-    debugger;
     const statusData = {
       productId: productId,
       newStatus: newStatus,
@@ -38,13 +35,11 @@ export const changeProductStatus = async (productId, newStatus) => {
       `${API_ENDPOINT}/Seller/product/status`,
       statusData
     );
-    debugger;
-    if (response.data.success == true) {
+    if (response.data.success === true) {
       toast.success('Product status updated successfully!');
     }
     return response.data;
   } catch (error) {
-
     throw error;
   }
 };
@@ -54,10 +49,8 @@ export const fetchShopDetails = async (ownerId) => {
     const response = await axios.get(
       `${API_ENDPOINT}/Seller/GetShopByOwner/${ownerId}`
     );
-
     return response.data;
   } catch (error) {
-
     throw error;
   }
 };
@@ -75,15 +68,13 @@ export const updateSellerContactInfo = async (sellerId, email, phoneNumber) => {
       sellerData
     );
 
-    if (response.data.success == true) {
+    if (response.data.success === true) {
       toast.success(response.data.title);
-    }
-    else if (response.data.success == false) {
+    } else if (response.data.success === false) {
       toast.error(response.data.title);
     }
     return response.data;
   } catch (error) {
-
     throw error;
   }
 };
@@ -105,12 +96,11 @@ export const changeShopStatus = async (
       OpeningDay: editedOpeningDay,
       ClosingDay: editedClosingDay,
     };
-    debugger;
     const response = await axios.put(
       `${API_ENDPOINT}/Seller/ChangeShopStatus`,
       statusData
     );
-    if (response.data.success == true) {
+    if (response.data.success === true) {
       toast.success(response.data.title);
     }
     return response.data;
@@ -127,7 +117,6 @@ export const updateShopInfo = async (
   editedShopLogo
 ) => {
   try {
-    debugger;
     const formData = new FormData();
     formData.append("shopId", shopId);
     formData.append("ShopName", editedStoreName);
@@ -157,8 +146,8 @@ export const getSellerProfile = async (sellerId) => {
     throw error;
   }
 };
-export const fetchCategories = async () => {
 
+export const fetchCategories = async () => {
   try {
     const response = await axios.get(`${API_ENDPOINT}/Seller/GetAllCategories`);
 
@@ -171,7 +160,7 @@ export const fetchCategories = async () => {
         if (Array.isArray(response.data[prop])) {
           return response.data[prop];
         }
-    }
+      }
       const arrayProperty = Object.values(response.data).find((value) =>
         Array.isArray(value)
       );
@@ -182,7 +171,7 @@ export const fetchCategories = async () => {
 
     return [];
   } catch (error) {
-    return []; 
+    return [];
   }
 };
 
@@ -207,7 +196,6 @@ export const addProduct = async (productData) => {
 
     return response.data;
   } catch (error) {
-
     if (error.response) {
       throw new Error(
         `Server responded with ${error.response.status}: ${JSON.stringify(
@@ -217,7 +205,6 @@ export const addProduct = async (productData) => {
     } else if (error.request) {
       throw new Error("No response received from server");
     } else {
-
       throw error;
     }
   }
@@ -225,7 +212,6 @@ export const addProduct = async (productData) => {
 
 export const fetchOrdersByShop = async (shopId) => {
   try {
-    debugger;
     const response = await axios.get(`${API_ENDPOINT}/Seller/orders`, {
       params: { shopId },
     });
@@ -241,22 +227,19 @@ export const changeOrderStatus = async (orderId, newStatus) => {
       OrderId: orderId,
       NewStatus: parseInt(newStatus, 10),
     };
-    debugger;
 
     const response = await axios.put(
       `${API_ENDPOINT}/Seller/order/update-status`,
       request
     );
-    if (response.data.success == true) {
+    if (response.data.success === true) {
       toast.success(response.data.message);
     }
-    if (response.data.success == false) {
+    if (response.data.success === false) {
       toast.error(response.data.message);
     }
-    debugger;
     return response.data;
   } catch (error) {
-
     throw error;
   }
 };
@@ -274,7 +257,6 @@ export const fetchWishlistProducts = async (shopId) => {
 
 export const updateProductDiscount = async (productId, discountPercentage) => {
   try {
-    debugger;
     const response = await axios.put(`${API_ENDPOINT}/Seller/product/update-discount/${productId}`, {
       discountPercentage
     });

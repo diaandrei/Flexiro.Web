@@ -2,7 +2,7 @@ import { postRequest } from '../../api/api';
 import toast from 'react-hot-toast';
 
 export const signInApi = async ({ email, password }) => {
-    const response = await postRequest('/login', { email, password });
+    const response = await postRequest('/Account/login', { email, password });
 
     debugger;
     if (response.data.success) {

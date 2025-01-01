@@ -124,7 +124,7 @@ const Sidebar = () => {
                   backgroundColor: "#d97847",
                 },
                 "&.Mui-selected": {
-                  backgroundColor: "#F38E58",
+                  backgroundColor: "#808080",
                   "&:hover": {
                     backgroundColor: "#d97847",
                   },

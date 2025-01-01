@@ -109,43 +109,12 @@ const ImageWithTextOverlay = ({ imageSrc, alt }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              mb: 2,
-              fontSize: { xs: "12px", sm: "14px" },
-              maxWidth: "400px",
-            }}
-          >
-            Join our thriving community of buyers and sellers. Find amazing
-            deals on unique products or start your own online store today!
-          </Typography>
-        </motion.div>
+        ></motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <Button
-            variant="contained"
-            onClick={scrollToHotProducts}
-            sx={{
-              backgroundColor: "#F38E58",
-              color: "white",
-              padding: { xs: "8px 16px", sm: "10px 20px" },
-              fontSize: { xs: "12px", sm: "14px" },
-              fontWeight: "bold",
-              borderRadius: "50px",
-              textTransform: "none",
-              "&:hover": {
-                backgroundColor: "#e57c46",
-              },
-            }}
-          >
-            Explore Hot Products
-          </Button>
-        </motion.div>
+        ></motion.div>
       </Box>
       <motion.div
         initial={{ opacity: 0, y: 10 }}

@@ -65,7 +65,7 @@ const Sidebar = () => {
     { text: "Products", icon: <ProductIcon />, path: "/seller/products" },
     { text: "Orders", icon: <OrderIcon />, path: "/seller/orders" },
     {
-      text: "My Wishlist",
+      text: "Wishlist",
       icon: <FavoriteIcon />,
       path: "/seller/wishlistproducts",
     },

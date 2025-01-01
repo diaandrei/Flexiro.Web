@@ -3,7 +3,7 @@ import { postRequest } from "../../api/api";
 
 export const signUpAPI = async (userData) => {
   try {
-    const response = await postRequest("/register", userData);
+    const response = await postRequest("/Account/register", userData);
     return response.data;
   }
   catch (error) {

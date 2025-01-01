@@ -249,7 +249,6 @@ const routes = [
       },
     ],
   },
-
   {
     path: "*",
     element: <NotFound />,
