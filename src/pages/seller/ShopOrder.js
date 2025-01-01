@@ -216,12 +216,10 @@ export default function SellerOrders() {
     const tabs = [
         { label: 'All Orders', key: 'allOrders' },
         { label: 'New Orders', key: 'newOrders' },
-        { label: 'Pending Orders', key: 'pendingOrders' },
         { label: 'Processing Orders', key: 'processingOrders' },
         { label: 'Shipped Orders', key: 'shippedOrders' },
         { label: 'Delivered Orders', key: 'deliveredOrders' },
         { label: 'Canceled Orders', key: 'canceledOrders' },
-        { label: 'Returned Orders', key: 'returnedOrders' },
         { label: 'Completed Orders', key: 'completedOrders' },
     ];
 

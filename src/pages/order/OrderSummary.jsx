@@ -165,9 +165,9 @@ export default function OrderSummary() {
       newErrors.phoneNumber = "Phone number is required";
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
-    if (!formData.zipCode) newErrors.zipCode = "ZIP code is required";
+    if (!formData.zipCode) newErrors.zipCode = "Postcode is required";
     if (!formData.country) newErrors.country = "Country is required";
-    if (!formData.state) newErrors.state = "State is required";
+    if (!formData.state) newErrors.state = "County is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -344,8 +344,8 @@ export default function OrderSummary() {
                 { name: "phoneNumber", label: "Phone Number" },
                 { name: "address", label: "Address" },
                 { name: "city", label: "City" },
-                { name: "state", label: "State" },
-                { name: "zipCode", label: "ZIP Code" },
+                { name: "state", label: "County" },
+                { name: "zipCode", label: "Postcode" },
                 { name: "country", label: "Country" },
               ].map(({ name, label }) => (
                 <Grid item xs={12} sm={6}>

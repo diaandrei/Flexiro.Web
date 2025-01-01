@@ -76,8 +76,50 @@ const RegisterSellerForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const formatFieldName = (name) => {
+    switch (name) {
+      case "userName":
+        return "Username";
+      case "ownerName":
+        return "Owner Name";
+      case "storeName":
+        return "Store Name";
+      case "contactNo":
+        return "Contact Number";
+      case "email":
+        return "Email";
+      case "password":
+        return "Password";
+      case "country":
+        return "Country";
+      case "city":
+        return "City";
+      case "zipCode":
+        return "Postcode";
+      case "slogan":
+        return "Slogan";
+      case "storeDescription":
+        return "Store Description";
+      case "openingDate":
+        return "Opening Date";
+      case "openingTime":
+        return "Opening Time";
+      case "closingTime":
+        return "Closing Time";
+      case "openingDay":
+        return "Opening Day";
+      case "closingDay":
+        return "Closing Day";
+      case "shopLogo":
+        return "Shop Logo";
+      default:
+        return name;
+    }
+  };
+
   const validateField = (name, value) => {
-    if (value === "" || value === null) return `${name} cannot be empty`;
+    if (value === "" || value === null)
+      return `${formatFieldName(name)} cannot be empty`;
     switch (name) {
       case "userName":
         return value.length < 3
@@ -484,7 +526,7 @@ const RegisterSellerForm = () => {
               <TextField
                 fullWidth
                 name="zipCode"
-                label="Zip Code"
+                label="Postcode"
                 value={formData.zipCode}
                 onChange={handleChange}
                 error={!!errors.zipCode}

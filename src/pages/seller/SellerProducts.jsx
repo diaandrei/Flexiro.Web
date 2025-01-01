@@ -51,13 +51,13 @@ function TabPanel({ children, value, index, ...other }) {
 
 const ProductStatusMap = {
   0: "Draft",
-  1: "ForSell",
-  2: "SoldOut",
+  1: "Available",
+  2: "Sold Out",
 };
 
 const AvailabilityStatusMap = {
-  0: "NotForSale",
-  1: "ForSale",
+  0: "Sold Out",
+  1: "Available",
 };
 
 const getScoreProgress = (score) => {
@@ -287,9 +287,6 @@ export default function SellerProducts() {
                   Status
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", color: "text.secondary" }}>
-                  Sale Status
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "text.secondary" }}>
                   Stock
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", color: "text.secondary" }}>
@@ -297,6 +294,7 @@ export default function SellerProducts() {
                 </TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {productList.map((product) => (
                 <TableRow
@@ -445,20 +443,6 @@ export default function SellerProducts() {
                       }}
                     >
                       {ProductStatusMap[product.status]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color:
-                          product.availability === 1
-                            ? "success.main"
-                            : "text.secondary",
-                        fontWeight: "medium",
-                      }}
-                    >
-                      {AvailabilityStatusMap[product.availability]}
                     </Typography>
                   </TableCell>
                   <TableCell>

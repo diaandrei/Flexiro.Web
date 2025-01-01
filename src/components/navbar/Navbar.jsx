@@ -162,14 +162,14 @@ function Navbar() {
               onClick={handleRegisterClick}
               variant="outlined"
               sx={{
-                color: "#505050",
+                color: "#808080",
                 borderColor: "#808080",
                 fontWeight: "bold",
                 padding: "6px 18px",
                 fontSize: { xs: "12px", sm: "14px" },
                 borderRadius: "25px",
                 textTransform: "none",
-                backgroundColor: "#808080",
+                backgroundColor: "white",
                 "&:hover": {
                   backgroundColor: "#808080",
                   color: "white",
