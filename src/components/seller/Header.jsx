@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
 import toast from "react-hot-toast";
+import NotificationIcon from "../notification-icon/NotificationIcon";
 import { logOutUser } from "../../features/user/userSlice";
 
 const Search = styled("div")(({ theme }) => ({
@@ -74,6 +75,7 @@ const Header = () => {
       dispatch(setUser(userData));
     }
   }, [dispatch]);
+
   const user = useSelector((state) => state.user);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -89,10 +91,11 @@ const Header = () => {
   const handleLogout = () => {
     // Dispatch action to reset user data
     dispatch(logOutUser());
-    toast.success("Logout Success");
+    toast.success("You have successfully logged out.");
     // Redirect to the sign-in page
-    navigate("/login");
+    navigate("/");
   };
+
   return (
     <AppBar
       position="static"
@@ -101,6 +104,7 @@ const Header = () => {
       sx={{ backgroundColor: "white" }}
     >
       <Toolbar sx={{ alignSelf: "flex-end" }}>
+        <NotificationIcon />
         <Avatar sx={{ mr: 1, ml: 4 }}>AA</Avatar>
         <Box>
           <Typography variant="subtitle1" sx={{ mb: 0 }}>
@@ -127,7 +131,6 @@ const Header = () => {
           onClose={handleClose}
         >
           <MenuItem onClick={handleProfile}>Profile</MenuItem>
-
           <MenuItem onClick={handleLogout}>Log Out</MenuItem>
         </Menu>
       </Toolbar>

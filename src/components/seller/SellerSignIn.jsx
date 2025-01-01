@@ -121,7 +121,6 @@ const SellerSignIn = () => {
         );
 
         toast.success("Successfully signed in! Welcome back!");
-
         setEmail("");
         setPassword("");
         navigate(`/Seller/dashboard`);
@@ -185,7 +184,7 @@ const SellerSignIn = () => {
             },
           }}
         >
-          Seller Log In
+          Seller Sign In
         </Typography>
         {errors.password && (
           <Typography
@@ -291,7 +290,7 @@ const SellerSignIn = () => {
             color="#F38E58"
             sx={{ fontWeight: 600 }}
           >
-            Register now!
+            Sign Up now!
           </MuiLink>
         </Typography>
       </Paper>
