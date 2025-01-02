@@ -63,8 +63,7 @@ export default function OrderSummary() {
     phoneNumber: "",
     address: "",
     city: "",
-    state: "",
-    zipCode: "",
+    postcode: "",
     country: "",
     note: "",
     addToAddressBook: false,
@@ -165,9 +164,8 @@ export default function OrderSummary() {
       newErrors.phoneNumber = "Phone number is required";
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.city) newErrors.city = "City is required";
-    if (!formData.zipCode) newErrors.zipCode = "Postcode is required";
+    if (!formData.postcode) newErrors.postcode = "Postcode is required";
     if (!formData.country) newErrors.country = "Country is required";
-    if (!formData.state) newErrors.state = "County is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -222,8 +220,7 @@ export default function OrderSummary() {
           phoneNumber: formData.phoneNumber,
           address: formData.address,
           city: formData.city,
-          state: formData.state,
-          zipCode: formData.zipCode,
+          postcode: formData.postcode,
           country: formData.country,
           note: formData.note,
           addToAddressBook: formData.addToAddressBook,
@@ -262,8 +259,7 @@ export default function OrderSummary() {
         phoneNumber: selected.phoneNumber,
         address: selected.address,
         city: selected.city,
-        state: selected.state,
-        zipCode: selected.zipCode,
+        postcode: selected.postcode,
         country: selected.country,
         note: selected.note,
       });
@@ -344,8 +340,7 @@ export default function OrderSummary() {
                 { name: "phoneNumber", label: "Phone Number" },
                 { name: "address", label: "Address" },
                 { name: "city", label: "City" },
-                { name: "state", label: "County" },
-                { name: "zipCode", label: "Postcode" },
+                { name: "postcode", label: "Postcode" },
                 { name: "country", label: "Country" },
               ].map(({ name, label }) => (
                 <Grid item xs={12} sm={6}>

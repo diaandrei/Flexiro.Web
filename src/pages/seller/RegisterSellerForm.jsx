@@ -57,7 +57,7 @@ const RegisterSellerForm = () => {
     contactNo: "",
     country: "",
     city: "",
-    zipCode: "",
+    postcode: "",
     storeDescription: "",
     email: "",
     password: "",
@@ -94,7 +94,7 @@ const RegisterSellerForm = () => {
         return "Country";
       case "city":
         return "City";
-      case "zipCode":
+      case "postcode":
         return "Postcode";
       case "slogan":
         return "Slogan";
@@ -153,8 +153,8 @@ const RegisterSellerForm = () => {
         return value.length < 2
           ? "City name must be at least 2 characters long"
           : "";
-      case "zipCode":
-        return !/^\d{5}(-\d{4})?$/.test(value) ? "Invalid ZIP code" : "";
+      case "postcode":
+        return !/^\d{5}(-\d{4})?$/.test(value) ? "Invalid Postcode code" : "";
       case "slogan":
         const sloganWordCount = value.trim().split(/\s+/).length;
         if (value.length < 5) {
@@ -525,12 +525,12 @@ const RegisterSellerForm = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                name="zipCode"
+                name="postcode"
                 label="Postcode"
-                value={formData.zipCode}
+                value={formData.postcode}
                 onChange={handleChange}
-                error={!!errors.zipCode}
-                helperText={errors.zipCode}
+                error={!!errors.postcode}
+                helperText={errors.postcode}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

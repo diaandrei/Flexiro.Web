@@ -173,7 +173,7 @@ export default function SellerOrders() {
                                 </ul>
                             </TableCell>
                             <TableCell>
-                                {`${order.shippingAddress.firstName} ${order.shippingAddress.lastName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.state}, ${order.shippingAddress.zipCode}`}
+                                {`${order.shippingAddress.firstName} ${order.shippingAddress.lastName}, ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postcode}`}
                             </TableCell>
                             <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                             <TableCell>£{order.totalAmount.toFixed(2)}</TableCell>

@@ -300,7 +300,7 @@ function CustomerOrders() {
                                             Shipping Address:
                                         </Typography>
                                         <Typography variant="body2">
-                                            {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.zipCode}
+                                            {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.postcode}
                                         </Typography>
                                     </Box>
                                     <Box sx={{ mt: 2 }}>

@@ -11,7 +11,7 @@ export const registerSellerAPI = async (sellerData) => {
         'ContactNo': sellerData.contactNo,
         'Country': sellerData.country,
         'City': sellerData.city,
-        'ZipCode': sellerData.zipCode,
+        'Postcode': sellerData.Postcode,
         'StoreDescription': sellerData.storeDescription,
         'Email': sellerData.email,
         'Password': sellerData.password,
@@ -20,7 +20,6 @@ export const registerSellerAPI = async (sellerData) => {
         'ClosingTime': sellerData.closingTime,
         'OpeningDay': sellerData.openingDay,
         'ClosingDay': sellerData.closingDay,
-
     };
     debugger;
     Object.entries(fieldsMap).forEach(([key, value]) => {
