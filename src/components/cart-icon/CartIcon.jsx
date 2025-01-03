@@ -7,9 +7,16 @@ import { getCartCount } from "../../features/cart/cartCountSlice";
 const CartIcon = () => {
   const dispatch = useDispatch();
   const count = useSelector((state) => state.cartCount.count);
+  const getGuestId = () => {
+    let guestId = localStorage.getItem("guestId");
+    return guestId;
+  };
+  const getCurrentId = () => {
+    const userId = localStorage.getItem("userId");
+    return userId || getGuestId();
+  };
 
-  const userId = localStorage.getItem("userId");
-
+  const userId = getCurrentId();
   useEffect(() => {
     if (userId) {
       dispatch(getCartCount(userId));

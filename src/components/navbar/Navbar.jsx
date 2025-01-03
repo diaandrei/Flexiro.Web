@@ -37,16 +37,15 @@ function Navbar() {
   const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isLoggedIn = Boolean(localStorage.getItem("token"));
+
   const handleSearch = (e) => setSearchQuery(e.target.value);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const handleLogoClick = () => navigate("/");
   const handleRegisterClick = () => navigate("/registerseller");
-
   const handleCartClick = async () => {
     navigate("/checkout");
   };
-
   const handleSwitchDashboard = () => {
     if (userRole === "Admin") {
       navigate("/Admin/dashboard");
@@ -54,6 +53,8 @@ function Navbar() {
       navigate("/Seller/dashboard");
     }
   };
+
+  const navItems = [{ title: "Shops", path: "/" }];
 
   return (
     <AppBar
@@ -100,7 +101,7 @@ function Navbar() {
         >
           <TextField
             variant="outlined"
-            placeholder="Search..."
+            placeholder="Search Shops..."
             size="small"
             value={searchQuery}
             onChange={handleSearch}
@@ -126,33 +127,41 @@ function Navbar() {
           }}
         >
           {!isMobile && (
-            <Box
-              sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}
-            ></Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.title}
+                  component={NavLink}
+                  to={item.path}
+                  sx={{
+                    color: "grey",
+                    display: "flex",
+                    alignItems: "center",
+                    "&.active": { fontWeight: "600" },
+                  }}
+                >
+                  {item.title}
+                </Button>
+              ))}
+            </Box>
           )}
           <IconButton onClick={handleCartClick} color="grey">
             <CartIcon />
           </IconButton>
           {isLoggedIn && userRole === "Customer" && <NotificationIcon />}
-
           {userRole === "Admin" || userRole === "Seller" ? (
             <Button
               onClick={handleSwitchDashboard}
-              variant="outlined"
+              variant="contained"
               sx={{
-                color: "#505050",
-                borderColor: "#808080",
+                backgroundColor: "#4CAF50",
+                color: "white",
                 fontWeight: "bold",
-                padding: "6px 18px",
-                fontSize: "14px",
-                borderRadius: "25px",
+                padding: { xs: "8px 16px", sm: "10px 20px" },
+                fontSize: { xs: "12px", sm: "14px" },
+                borderRadius: "50px",
                 textTransform: "none",
-                transition: "all 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#808080",
-                  color: "white",
-                  borderColor: "#808080",
-                },
+                "&:hover": { backgroundColor: "#45A049" },
               }}
             >
               Dashboard
@@ -160,21 +169,16 @@ function Navbar() {
           ) : (
             <Button
               onClick={handleRegisterClick}
-              variant="outlined"
+              variant="contained"
               sx={{
-                color: "#808080",
-                borderColor: "#808080",
+                backgroundColor: "#F38E58",
+                color: "white",
                 fontWeight: "bold",
-                padding: "6px 18px",
+                padding: { xs: "8px 16px", sm: "10px 20px" },
                 fontSize: { xs: "12px", sm: "14px" },
-                borderRadius: "25px",
+                borderRadius: "50px",
                 textTransform: "none",
-                backgroundColor: "white",
-                "&:hover": {
-                  backgroundColor: "#808080",
-                  color: "white",
-                  borderColor: "#808080",
-                },
+                "&:hover": { backgroundColor: "white", color: "#F38E58" },
               }}
             >
               Register Seller
@@ -186,20 +190,29 @@ function Navbar() {
               <AccountCircle />
             </Avatar>
           </IconButton>
-
           <UserMenu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             handleClose={handleClose}
           />
         </Box>
-
         <Drawer
           anchor="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
         >
           <List sx={{ width: 250 }}>
+            {navItems.map((item) => (
+              <ListItem
+                key={item.title}
+                button
+                component={NavLink}
+                to={item.path}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText primary={item.title} />
+              </ListItem>
+            ))}
             {!userRole && (
               <ListItem button onClick={handleRegisterClick}>
                 <ListItemText primary="Register Seller" />
