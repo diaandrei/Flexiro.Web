@@ -172,7 +172,6 @@ export default function OrderSummary() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    debugger;
     // Validate form
     if (!validateForm()) {
       toast.error("Please fill in all required fields.");

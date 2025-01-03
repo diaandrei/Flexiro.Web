@@ -74,7 +74,6 @@ const Header = () => {
       dispatch(setUser(userData));
     }
   }, [dispatch]);
-  debugger;
   const user = useSelector((state) => state.user);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

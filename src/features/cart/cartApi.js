@@ -42,7 +42,6 @@ export const removeItemFromCart = async (cartItemId) => {
 export const updateCartItemQuantity = async (cartItemId, quantity) => {
   const userId = localStorage.getItem("userId");
   const response = await putRequest(`/customer/UpdateCartItemQuantity?cartItemId=${cartItemId}&quantity=${quantity}&userId=${userId}`);
-  debugger;
   if (response.status === 200) {
     const responedata = {
       cartItemId: response.data.data.cartItemId,

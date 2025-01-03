@@ -122,14 +122,12 @@ export default function Checkout() {
   };
 
   const handleRemoveItem = async (cartItemId) => {
-    debugger;
     try {
       if (!cartItemId) {
         toast.error("Plese select at least one product");
       }
       const userId = localStorage.getItem("userId");
       const response = await removeCartItem(cartItemId, userId);
-      debugger;
       if (response) {
         setCart((prevCart) => {
           const updatedItems = prevCart.items.filter(

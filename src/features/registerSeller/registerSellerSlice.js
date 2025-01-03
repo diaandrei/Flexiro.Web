@@ -6,9 +6,7 @@ export const registerSeller = createAsyncThunk(
     'registerSeller/registerSeller',
     async (sellerData, { rejectWithValue }) => {
         try {
-            debugger;
             const response = await registerSellerAPI(sellerData);
-            debugger;
             if (response.success == false) {
                 const errorMessage = response.description || "Sign-up failed. Please check your information and try again.";
                 toast.error(errorMessage);

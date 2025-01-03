@@ -8,7 +8,6 @@ export const signUpUser = createAsyncThunk(
         try {
             const response = await signUpAPI(userData);
 
-            debugger;
             if (response.success == false) {
                 const errorMessage = response.title || "Sign-up failed. Please check your information and try again.";
                 toast.error(errorMessage);

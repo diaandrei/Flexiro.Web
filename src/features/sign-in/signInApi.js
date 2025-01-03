@@ -4,9 +4,8 @@ import toast from 'react-hot-toast';
 export const signInApi = async ({ email, password }) => {
     const response = await postRequest('/Account/login', { email, password });
 
-    debugger;
     if (response.data.success) {
-        toast.success('Logged in successfully. Welcome back!');
+        toast.success('Logged in successfully.');
         return {
             userId: response.data.content.id,
             token: response.data.content.token,

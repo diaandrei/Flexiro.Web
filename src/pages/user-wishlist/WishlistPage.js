@@ -97,7 +97,7 @@ const WishlistPage = () => {
     if (error) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                <Typography color="error">{"No products in your wishlist"}</Typography>
+                <Typography>{"No products in your wishlist"}</Typography>
             </Box>
         );
     }

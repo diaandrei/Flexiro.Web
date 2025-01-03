@@ -16,7 +16,6 @@ export const getCart = async (userId) => {
 
 export const updateCartItem = async (cartItemId, quantity, userId) => {
   try {
-    debugger;
     const cartData = {
       cartItemId: cartItemId,
       quantity: quantity,

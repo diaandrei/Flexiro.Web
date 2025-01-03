@@ -116,7 +116,6 @@ const Dashboard = () => {
 
     if (selectedShop) {
       try {
-        debugger;
         await changeshopstatus(selectedShop.shopId, newStatus);
         setIsSaving(false);
 
