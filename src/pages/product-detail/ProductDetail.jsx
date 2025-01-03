@@ -15,9 +15,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { addItem, updateItemQuantity } from "../../features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import ReviewModal from "./ReviewModel";
 
 export default function ProductDetail() {
   const { productId } = useParams();
@@ -30,15 +31,15 @@ export default function ProductDetail() {
   );
   const cartItems = useSelector((state) => state.cart.items);
   const [quantity, setQuantity] = useState(1);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [userRating, setUserRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     dispatch(fetchProductDetails({ productId, userId }));
-
     if (userId) {
       const fetchUserRating = async () => {
         try {
@@ -53,9 +54,25 @@ export default function ProductDetail() {
   }, [dispatch, productId, userId]);
 
   const handleQuantityChange = (amount) => {
-    setQuantity((prev) => Math.max(1, prev + amount));
+    const newQuantity = quantity + amount;
+    if (newQuantity >= 1 && newQuantity <= product.totalStock) {
+      setQuantity(newQuantity);
+    }
   };
 
+  const getStockStatusColor = (stock) => {
+    if (stock === 0) return "#FF4D4F";
+    if (stock <= 5) return "#FF7A00";
+    if (stock <= 10) return "#FFAB00";
+    return "#00C853";
+  };
+
+  const getStockStatusText = (stock) => {
+    if (stock === 0) return "Out of stock";
+    if (stock <= 5) return `Only ${stock} left in stock - order soon`;
+    if (stock <= 10) return `Limited stock - ${stock} items left`;
+    return `In stock (${stock} available)`;
+  };
   const handleRatingSubmit = async (newValue) => {
     if (!userId) {
       navigate("/login");
@@ -78,9 +95,8 @@ export default function ProductDetail() {
   };
 
   const handleAddToCart = async () => {
-    if (!userId) {
-      navigate("/login");
-    } else {
+    setIsAddingToCart(true);
+    try {
       const itemInCart = cartItems.find((item) => item.productId === productId);
       if (itemInCart) {
         await dispatch(
@@ -89,6 +105,11 @@ export default function ProductDetail() {
       } else {
         await dispatch(addItem({ ...product, quantity }));
       }
+    } catch (error) {
+    } finally {
+      setTimeout(() => {
+        setIsAddingToCart(false);
+      }, 2000);
     }
   };
 
@@ -113,9 +134,7 @@ export default function ProductDetail() {
         alignItems="center"
         height="60vh"
       >
-        <Typography color="error">
-          {error || "Failed to load product"}
-        </Typography>
+        <Typography color="grey">{"No Product Details Available"}</Typography>
       </Box>
     );
   }
@@ -123,71 +142,85 @@ export default function ProductDetail() {
   return (
     <Box
       sx={{
-        maxWidth: "1200px",
+        maxWidth: "1000px",
         mx: "auto",
-        px: { xs: 2, sm: 4 },
-        py: { xs: 3, sm: 6 },
+        px: { xs: 2, sm: 3, md: 4 },
+        py: { xs: 3, sm: 4, md: 6 },
+        bgcolor: "#FFFFFF",
       }}
     >
       <Box
         sx={{
           display: "flex",
-          gap: 1,
-          mb: { xs: 2, sm: 4 },
-          color: "text.secondary",
-          fontSize: { xs: "0.8rem", sm: "1rem" },
+          gap: 0.5,
+          mb: { xs: 2, sm: 3 },
+          color: "#94969F",
+          fontSize: { xs: "0.75rem", sm: "0.875rem" },
+          "& > .separator": { mx: 0.5 },
         }}
       >
-        <Typography>Product</Typography>
-        <Typography>{">"}</Typography>
-        <Typography color="text.primary">{product.productName}</Typography>
+        <Typography sx={{ cursor: "pointer", "&:hover": { color: "#262C36" } }}>
+          Shop
+        </Typography>
+        <span className="separator">/</span>
+        <Typography sx={{ cursor: "pointer", "&:hover": { color: "#262C36" } }}>
+          Products
+        </Typography>
+        <span className="separator">/</span>
+        <Typography color="#262C36">{product.productName}</Typography>
       </Box>
 
       <Grid container spacing={{ xs: 2, sm: 4, md: 6 }}>
+        {" "}
         <Grid item xs={12} md={6}>
-          <Box sx={{ position: "relative" }}>
+          <Box
+            sx={{
+              position: "relative",
+              backgroundColor: "#F8F9FA",
+              borderRadius: "16px",
+              p: 2,
+            }}
+          >
             <Box
               component="img"
               src={product.imageUrls[currentImageIndex]}
               alt={product.productName}
               sx={{
                 width: "100%",
-                maxWidth: "100%",
-                height: { xs: "300px", sm: "400px", md: "400px" },
-                borderRadius: "16px",
-                aspectRatio: "1",
+                height: { xs: "250px", sm: "300px", md: "400px" },
                 objectFit: "contain",
+                transition: "all 0.3s ease",
               }}
             />
-
             <Box
               sx={{
                 display: "flex",
-                gap: 2,
+                gap: 1,
                 mt: 2,
-                position: "relative",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Button
                 onClick={() => setCurrentImageIndex((i) => Math.max(0, i - 1))}
                 disabled={currentImageIndex === 0}
                 sx={{
-                  minWidth: "auto",
-                  p: 1,
-                  color: "text.primary",
-                  "&:disabled": { color: "text.disabled" },
+                  minWidth: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  backgroundColor: "white",
+                  boxShadow: "0px 1px 4px rgba(0,0,0,0.1)",
+                  p: 0,
                 }}
               >
-                <ChevronLeft />
+                <ChevronLeft size={16} />
               </Button>
 
               <Box
                 sx={{
                   display: "flex",
-                  gap: 2,
+                  gap: 1,
                   overflow: "hidden",
-                  flex: 1,
-                  justifyContent: "center",
                 }}
               >
                 {product.imageUrls.map((url, index) => (
@@ -195,16 +228,16 @@ export default function ProductDetail() {
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
                     sx={{
-                      width: { xs: 60, sm: 80 },
-                      height: { xs: 60, sm: 80 },
+                      width: { xs: 48, sm: 60 },
+                      height: { xs: 48, sm: 60 },
                       borderRadius: "8px",
                       overflow: "hidden",
                       cursor: "pointer",
                       border:
                         index === currentImageIndex
-                          ? "2px solid"
+                          ? "2px solid #262C36"
                           : "2px solid transparent",
-                      borderColor: "primary.main",
+                      transition: "all 0.2s ease",
                     }}
                   >
                     <Box
@@ -229,13 +262,15 @@ export default function ProductDetail() {
                 }
                 disabled={currentImageIndex === product.imageUrls.length - 1}
                 sx={{
-                  minWidth: "auto",
-                  p: 1,
-                  color: "text.primary",
-                  "&:disabled": { color: "text.disabled" },
+                  minWidth: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  backgroundColor: "white",
+                  boxShadow: "0px 1px 4px rgba(0,0,0,0.1)",
+                  p: 0,
                 }}
               >
-                <ChevronRight />
+                <ChevronRight size={16} />
               </Button>
             </Box>
           </Box>
@@ -246,53 +281,72 @@ export default function ProductDetail() {
               display: "flex",
               flexDirection: "column",
               gap: { xs: 2, sm: 3 },
+              height: "100%",
             }}
           >
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  {product.averageRating.toFixed(1)}
-                </Typography>
-                <Rating
-                  value={product.averageRating}
-                  readOnly
-                  precision={0.1}
-                  size={isMobile ? "small" : "medium"}
-                />
-                <Typography color="text.secondary">
-                  ({product.totalReviews} Reviews)
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Typography>
-                  {userRating > 0 ? "Your rating:" : "Rate this product:"}
-                </Typography>
-                <Rating
-                  value={userRating}
-                  onChange={(event, newValue) => {
-                    if (!isSubmitting) {
-                      handleRatingSubmit(newValue);
-                    }
-                  }}
-                  disabled={isSubmitting}
-                  size={isMobile ? "small" : "medium"}
-                />
-              </Box>
-            </Box>
-
             <Typography
-              variant={isMobile ? "h5" : "h4"}
-              sx={{ fontWeight: 600 }}
+              variant={isMobile ? "h6" : "h5"}
+              sx={{
+                fontWeight: 700,
+                color: "#262C36",
+                mb: 0.5,
+              }}
             >
               {product.productName}
             </Typography>
-
-            <Box sx={{ display: "flex", alignItems: "baseline", gap: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                borderBottom: "1px solid #E5E7EB",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: 600, color: "#262C36" }}
+                >
+                  {product.averageRating.toFixed(1)}
+                </Typography>
+              </Box>
+              <Button
+                startIcon={
+                  <Star
+                    size={16}
+                    fill={userRating > 0 ? "#FF7A00" : "none"}
+                    color={userRating > 0 ? "#FF7A00" : "#262C36"}
+                  />
+                }
+                onClick={() => setIsReviewModalOpen(true)}
+                sx={{
+                  color: "#262C36",
+                  textTransform: "none",
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  p: 0.5,
+                }}
+              >
+                {userRating > 0 ? "Update rating" : "Rate this product"}
+              </Button>
+              <Typography variant="body2" color="#94969F">
+                ({product.totalReviews} reviews)
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 1.5,
+                py: 1.5,
+                borderBottom: "1px solid #E5E7EB",
+              }}
+            >
               {product.discountPercentage > 0 ? (
                 <>
                   <Typography
-                    variant={isMobile ? "h5" : "h4"}
-                    sx={{ fontWeight: 600, color: "#262C36" }}
+                    variant={isMobile ? "h6" : "h5"}
+                    sx={{ fontWeight: 700, color: "#262C36" }}
                   >
                     £
                     {(
@@ -301,125 +355,213 @@ export default function ProductDetail() {
                     ).toFixed(2)}
                   </Typography>
                   <Typography
-                    variant={isMobile ? "h6" : "h5"}
+                    variant="subtitle1"
                     sx={{
-                      fontWeight: 600,
+                      fontWeight: 500,
                       textDecoration: "line-through",
-                      color: "text.secondary",
+                      color: "#94969F",
                     }}
                   >
                     £{product.pricePerItem.toFixed(2)}
                   </Typography>
-                  <Typography
-                    color="error"
+                  <Box
                     sx={{
-                      fontSize: { xs: "0.8rem", sm: "1rem" },
-                      fontWeight: 500,
+                      px: 1.5,
+
+                      bgcolor: "#FFE9E5",
+                      borderRadius: "4px",
+                      color: "#FF4D4F",
+                      fontSize: "0.875rem",
                     }}
                   >
                     {product.discountPercentage}% Off
-                  </Typography>
+                  </Box>
                 </>
               ) : (
                 <Typography
-                  variant={isMobile ? "h5" : "h4"}
-                  sx={{ fontWeight: 600 }}
+                  variant={isMobile ? "h6" : "h5"}
+                  sx={{ fontWeight: 700, color: "#262C36" }}
                 >
                   £{product.pricePerItem.toFixed(2)}
                 </Typography>
               )}
             </Box>
-
-            <Box>
-              <Typography variant="h6" sx={{ fontWeight: 300 }}>
+            <Box sx={{}}>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontWeight: 600,
+                  color: "#262C36",
+                  mb: 1,
+                }}
+              >
                 Description
               </Typography>
               <Typography
-                color="text.secondary"
-                sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                sx={{
+                  color: "#4B5563",
+                  lineHeight: 1.5,
+                  fontSize: "0.875rem",
+                }}
               >
                 {product.description}
               </Typography>
             </Box>
-
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                gap: 3,
-                flexWrap: "wrap",
+                flexDirection: "column",
+                gap: 2,
+                py: 2,
+                borderTop: "1px solid #E5E7EB",
               }}
             >
-              <Typography>Quantity</Typography>
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  p: 1,
+                  gap: 1.5,
+                  py: 0.6,
+                  backgroundColor: "#F8F9FA",
+                  borderRadius: "8px",
                 }}
               >
-                <Button
-                  onClick={() => handleQuantityChange(-1)}
-                  disabled={quantity === 1}
+                <Box
                   sx={{
-                    minWidth: { xs: 32 },
-                    height: { xs: 32 },
-                    color: "black",
-                    backgroundColor: "#D0D0D2",
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    backgroundColor: getStockStatusColor(product.totalStock),
                   }}
-                >
-                  -
-                </Button>
+                />
                 <Typography
-                  sx={{ minWidth: { xs: 32, sm: 40 }, textAlign: "center" }}
-                >
-                  {quantity}
-                </Typography>
-                <Button
-                  onClick={() => handleQuantityChange(1)}
                   sx={{
-                    minWidth: { xs: 32 },
-                    height: { xs: 32 },
-                    color: "#f38e58",
-                    backgroundColor: "#262C36",
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    color: getStockStatusColor(product.totalStock),
                   }}
                 >
-                  +
-                </Button>
+                  {getStockStatusText(product.totalStock)}
+                </Typography>
               </Box>
-            </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
 
-            <Box
+                  gap: 2,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    color: "#262C36",
+                    fontSize: "0.875rem",
+                  }}
+                >
+                  Quantity
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                      bgcolor: product.totalStock === 0 ? "#F8F9FA" : "white",
+                    }}
+                  >
+                    <Button
+                      onClick={() => handleQuantityChange(-1)}
+                      disabled={quantity === 1 || product.totalStock === 0}
+                      sx={{
+                        minWidth: "40px",
+                        height: "40px",
+                        borderRadius: 0,
+                        color: "#262C36",
+                        "&.Mui-disabled": {
+                          color: "#94969F",
+                        },
+                      }}
+                    >
+                      -
+                    </Button>
+                    <Typography
+                      sx={{
+                        minWidth: "48px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                        color: product.totalStock === 0 ? "#94969F" : "#262C36",
+                      }}
+                    >
+                      {quantity}
+                    </Typography>
+                    <Button
+                      onClick={() => handleQuantityChange(1)}
+                      disabled={quantity >= product.totalStock}
+                      sx={{
+                        minWidth: "40px",
+                        height: "40px",
+                        borderRadius: 0,
+                        color: "#262C36",
+                        "&.Mui-disabled": {
+                          color: "#94969F",
+                        },
+                      }}
+                    >
+                      +
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+              {product.totalStock > 0 && product.totalStock <= 10 && (
+                <Typography
+                  sx={{
+                    fontSize: "0.75rem",
+                    color: "#FF7A00",
+                    fontStyle: "italic",
+                  }}
+                >
+                  Order now
+                </Typography>
+              )}
+            </Box>
+            <Button
+              variant="contained"
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
               sx={{
-                display: "flex",
-                gap: 2,
-                mt: 1,
-                flexDirection: { xs: "column", sm: "row" },
+                py: 1.5,
+                backgroundColor: "#262C36",
+                color: "white",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                textTransform: "none",
+                borderRadius: "8px",
+                mt: "10px",
               }}
             >
-              <Button
-                variant="contained"
-                sx={{
-                  px: 7,
-                  py: 1,
-                  minWidth: "fit-content",
-                  backgroundColor: "#262C36",
-                  color: "white",
-                  fontSize: "14px",
-                  textTransform: "none",
-                  borderRadius: "8px",
-                  "&:hover": {
-                    backgroundColor: "#3a4149",
-                  },
-                }}
-                onClick={handleAddToCart}
-              >
-                Add to Cart
-              </Button>
-            </Box>
+              {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
+            </Button>
           </Box>
         </Grid>
       </Grid>
+
+      <ReviewModal
+        open={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+        productId={productId}
+        userId={userId}
+        currentRating={userRating}
+        onSubmit={handleRatingSubmit}
+      />
     </Box>
   );
 }

@@ -20,7 +20,6 @@ export const addOrUpdateReview = async (reviewData) => {
         );
         return response.data;
     } catch (error) {
-
         throw error;
     }
 };

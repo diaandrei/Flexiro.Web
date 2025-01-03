@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import useDispatch from "react-redux";
-import { getCartCount } from "../../features/cart/cartCountSlice";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch, userSelector } from "react-redux";
+import { getCartCount } from "../../features/cart/cartCountSlice";
 
 const UserMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
