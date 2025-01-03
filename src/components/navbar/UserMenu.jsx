@@ -47,7 +47,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("name");
     localStorage.removeItem("email");
-    toast.success("Logout Success");
+    toast.success("Logged out successfully");
     navigate("/");
 
     handleClose();

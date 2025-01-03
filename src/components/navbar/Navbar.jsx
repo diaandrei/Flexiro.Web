@@ -126,25 +126,6 @@ function Navbar() {
             justifyContent: "flex-end",
           }}
         >
-          {!isMobile && (
-            <Box sx={{ display: "flex", alignItems: "center", gap: 4, my: 2 }}>
-              {navItems.map((item) => (
-                <Button
-                  key={item.title}
-                  component={NavLink}
-                  to={item.path}
-                  sx={{
-                    color: "grey",
-                    display: "flex",
-                    alignItems: "center",
-                    "&.active": { fontWeight: "600" },
-                  }}
-                >
-                  {item.title}
-                </Button>
-              ))}
-            </Box>
-          )}
           <IconButton onClick={handleCartClick} color="grey">
             <CartIcon />
           </IconButton>

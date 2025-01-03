@@ -87,8 +87,8 @@ export default function SellerAddProduct() {
     message: "",
     severity: "info",
   });
-
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchCategoriesData();
   }, []);
@@ -101,7 +101,7 @@ export default function SellerAddProduct() {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: "Failed to fetch categories.",
+        message: "Failed to fetch categories",
         severity: "error",
       });
     } finally {
@@ -363,31 +363,8 @@ export default function SellerAddProduct() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Weight"
-                  name="weight"
-                  type="number"
-                  value={formData.weight}
-                  onChange={handleChange}
-                  error={!!errors.weight}
-                  helperText={errors.weight}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Unit</InputLabel>
-                  <Select label="Unit" defaultValue="gram">
-                    <MenuItem value="gram">Gram (gr)</MenuItem>
-                    <MenuItem value="kg">Kilogram (kg)</MenuItem>
-                    <MenuItem value="lb">Pound (lb)</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
                 <FormControl component="fieldset">
-                  <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                  <Typography variant="subtitle2" sx={{}}>
                     Product Condition
                   </Typography>
                   <ThemeProvider theme={theme}>
@@ -405,38 +382,27 @@ export default function SellerAddProduct() {
                       <FormControlLabel
                         value="secondhand"
                         control={<Radio />}
-                        label="Secondhand"
+                        label="Used"
                       />
                     </RadioGroup>
                   </ThemeProvider>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} sm={6}>
-                <FormControl component="fieldset">
-                  <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                    Imported Item
-                  </Typography>
-                  <ThemeProvider theme={theme}>
-                    <RadioGroup
-                      row
-                      name="ImportedItem"
-                      value={formData.ImportedItem}
-                      onChange={handleChange}
-                    >
-                      <FormControlLabel
-                        value="true"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="false"
-                        control={<Radio />}
-                        label="No"
-                      />
-                    </RadioGroup>
-                  </ThemeProvider>
-                </FormControl>
+                <TextField
+                  fullWidth
+                  label="Weight"
+                  name="weight"
+                  type="number"
+                  value={formData.weight}
+                  onChange={handleChange}
+                  error={!!errors.weight}
+                  helperText={errors.weight}
+                  required
+                />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth

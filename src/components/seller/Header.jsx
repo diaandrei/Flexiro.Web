@@ -103,7 +103,7 @@ const Header = () => {
       }
     } catch (error) {}
     dispatch(logOutUser());
-    toast.success("Logout Success");
+    toast.success("Logged out successfully");
     navigate("/login");
   };
   return (
