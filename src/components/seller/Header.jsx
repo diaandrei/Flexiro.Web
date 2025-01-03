@@ -11,8 +11,6 @@ import {
   Box,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +18,8 @@ import { setUser } from "../../features/user/userSlice";
 import toast from "react-hot-toast";
 import NotificationIcon from "../notification-icon/NotificationIcon";
 import { logOutUser } from "../../features/user/userSlice";
+import { getCartCount } from "../../features/cart/cartCountSlice";
+import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -65,12 +65,12 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    // Check if user data exists in localStorage
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      // Parse the saved user data and dispatch the setUser action
       const userData = JSON.parse(savedUser);
       dispatch(setUser(userData));
     }
@@ -88,14 +88,24 @@ const Header = () => {
   const handleProfile = () => {
     navigate("/seller/settings");
   };
-  const handleLogout = () => {
-    // Dispatch action to reset user data
-    dispatch(logOutUser());
-    toast.success("You have successfully logged out.");
-    // Redirect to the sign-in page
-    navigate("/");
-  };
 
+  const handleLogout = async () => {
+    try {
+      if (userId) {
+        const response = await axios.post(
+          `${API_ENDPOINT}/Customer/clearCart?userId=${userId}`
+        );
+
+        if (response.data.success) {
+          dispatch(getCartCount(userId));
+        } else {
+        }
+      }
+    } catch (error) {}
+    dispatch(logOutUser());
+    toast.success("Logout Success");
+    navigate("/login");
+  };
   return (
     <AppBar
       position="static"
@@ -131,7 +141,8 @@ const Header = () => {
           onClose={handleClose}
         >
           <MenuItem onClick={handleProfile}>Profile</MenuItem>
-          <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>

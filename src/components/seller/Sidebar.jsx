@@ -43,6 +43,18 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
+const StyledListItem = styled(ListItem)(({ theme, selected }) => ({
+  width: "200px",
+  margin: "16px auto",
+  backgroundColor: selected ? "#F38E58" : "transparent",
+  color: selected ? "#000" : "#808080",
+  borderRadius: "8px",
+  padding: "8px 8px",
+  "&:hover": {
+    backgroundColor: "#F38E58",
+  },
+}));
+
 const Sidebar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -103,53 +115,41 @@ const Sidebar = () => {
         </Box>
         <Divider sx={{ width: "80%", mx: "auto", mb: 2 }} />
         <List>
-          {menuItems.map((item) => (
-            <ListItem
-              button
-              key={item.text}
-              component={Link}
-              to={item.path}
-              selected={location.pathname === item.path}
-              onClick={() => isMobile && handleDrawerToggle()}
-              sx={{
-                width: "200px",
-                margin: "16px auto",
-                backgroundColor:
-                  location.pathname === item.path ? "#F38E58" : "transparent",
-                color: location.pathname === item.path ? "#000" : "#808080",
-                borderRadius: "8px",
-                padding: "8px 8px",
-                "&:hover": {
-                  backgroundColor: "#F38E58",
-                },
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  color: location.pathname === item.path ? "white" : "#808080",
-                  minWidth: "auto",
-                  marginRight: "12px",
-                }}
+          {menuItems.map((item) => {
+            const isSelected = location.pathname === item.path;
+            return (
+              <StyledListItem
+                key={item.text}
+                component={Link}
+                to={item.path}
+                selected={isSelected}
+                onClick={() => isMobile && handleDrawerToggle()}
               >
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText
-                sx={{
-                  color: location.pathname === item.path ? "white" : "#808080",
-                  minWidth: "auto",
-                  marginRight: "12px",
-                }}
-                primary={item.text}
-              />
-            </ListItem>
-          ))}
+                <ListItemIcon
+                  sx={{
+                    color: isSelected ? "white" : "#808080",
+                    minWidth: "auto",
+                    marginRight: "12px",
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  sx={{
+                    color: isSelected ? "white" : "#808080",
+                    minWidth: "auto",
+                    marginRight: "12px",
+                  }}
+                  primary={item.text}
+                />
+              </StyledListItem>
+            );
+          })}
         </List>
       </Box>
-
       <Box>
         <List>
-          <ListItem
-            button
+          <StyledListItem
             component={Link}
             to="/seller/settings"
             onClick={() => isMobile && handleDrawerToggle()}
@@ -167,7 +167,7 @@ const Sidebar = () => {
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Settings" sx={{ color: "#000" }} />
-          </ListItem>
+          </StyledListItem>
         </List>
       </Box>
     </>

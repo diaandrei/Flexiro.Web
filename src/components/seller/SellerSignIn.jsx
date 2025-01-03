@@ -120,7 +120,7 @@ const SellerSignIn = () => {
           })
         );
 
-        toast.success("Successfully signed in! Welcome back!");
+        toast.success("Successfully signed in!");
         setEmail("");
         setPassword("");
         navigate(`/Seller/dashboard`);
