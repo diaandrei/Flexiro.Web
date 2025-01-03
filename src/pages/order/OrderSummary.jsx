@@ -1,9 +1,7 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DropIn from "braintree-web-drop-in-react";
-
 import toast from "react-hot-toast";
 import {
   Box,

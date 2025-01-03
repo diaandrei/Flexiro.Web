@@ -11,8 +11,8 @@ export const registerSeller = createAsyncThunk(
                 const errorMessage = response.description || "Sign-up failed. Please check your information and try again.";
                 toast.error(errorMessage);
                 return rejectWithValue(response.description || "Sign-up failed. Please check your information and try again.");
-
             }
+            
             if (response.success == true) {
                 const successMessage = response.title || "Sign Up Success!";
                 toast.success(successMessage);

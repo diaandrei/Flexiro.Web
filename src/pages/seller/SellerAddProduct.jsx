@@ -160,10 +160,6 @@ export default function SellerAddProduct() {
       newErrors.description = "Description is required.";
     if (formData.ProductImages.length === 0)
       newErrors.ProductImages = "At least one product image is required.";
-    if (!formData.MinimumPurchase)
-      newErrors.MinimumPurchase = "Minimum purchase is required.";
-    else if (parseInt(formData.MinimumPurchase) <= 0)
-      newErrors.MinimumPurchase = "Minimum purchase must be greater than 0.";
     if (!formData.Stock) newErrors.Stock = "Stock is required.";
     else if (parseInt(formData.Stock) < 0)
       newErrors.Stock = "Stock cannot be negative.";
@@ -362,22 +358,6 @@ export default function SellerAddProduct() {
                   helperText={errors.price}
                   InputProps={{
                     startAdornment: <Typography sx={{ mr: 1 }}>£</Typography>,
-                  }}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Minimum Purchase"
-                  name="MinimumPurchase"
-                  type="number"
-                  value={formData.MinimumPurchase}
-                  onChange={handleChange}
-                  error={!!errors.MinimumPurchase}
-                  helperText={errors.MinimumPurchase}
-                  InputProps={{
-                    endAdornment: <Typography sx={{ ml: 1 }}>Pcs</Typography>,
                   }}
                   required
                 />

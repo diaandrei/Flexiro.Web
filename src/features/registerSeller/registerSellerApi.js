@@ -11,7 +11,7 @@ export const registerSellerAPI = async (sellerData) => {
         'ContactNo': sellerData.contactNo,
         'Country': sellerData.country,
         'City': sellerData.city,
-        'Postcode': sellerData.Postcode,
+        'Postcode': sellerData.postcode,
         'StoreDescription': sellerData.storeDescription,
         'Email': sellerData.email,
         'Password': sellerData.password,
@@ -21,7 +21,6 @@ export const registerSellerAPI = async (sellerData) => {
         'OpeningDay': sellerData.openingDay,
         'ClosingDay': sellerData.closingDay,
     };
-    debugger;
     Object.entries(fieldsMap).forEach(([key, value]) => {
         if (value === undefined || value === null) {
             throw new Error(`${key} is required`);
@@ -36,7 +35,7 @@ export const registerSellerAPI = async (sellerData) => {
     });
 
     try {
-        const response = await postRequest('/RegisterSeller', formData);
+        const response = await postRequest('/Account/RegisterSeller', formData);
         if (response.status >= 400) {
             const errorMessage = response.data?.content?.title || 'Registration failed. Please ensure all fields are filled out correctly and try again.';
             throw new Error(errorMessage);

@@ -91,7 +91,6 @@ function CustomerOrders() {
                     navigate('/login');
                     return;
                 }
-
                 const fetchedOrders = await getCustomerOrders(userId);
                 setOrders(fetchedOrders);
             } catch (err) {
@@ -126,7 +125,7 @@ function CustomerOrders() {
             <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
                 <ShoppingBag sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
                 <Typography variant="h4" gutterBottom>
-                    Something went wrong
+                    There are no orders to show yet
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph>
                     {error}

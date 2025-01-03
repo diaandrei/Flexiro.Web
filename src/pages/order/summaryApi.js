@@ -49,7 +49,7 @@ export const createPaymentIntent = async (userId, amount) => {
       {
         OrderId: userId,
         Amount: Math.round(amount * 100),
-        Currency: "usd",
+        Currency: "gbp",
       }
     );
     return response.data;
