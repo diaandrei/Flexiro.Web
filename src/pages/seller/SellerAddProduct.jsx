@@ -48,7 +48,6 @@ export default function SellerAddProduct() {
     sku: "",
     tags: [],
     status: 1,
-    MinimumPurchase: "",
     ProductCondition: "new",
     Stock: "",
     ImportedItem: "false",
@@ -133,7 +132,7 @@ export default function SellerAddProduct() {
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: ["price", "weight", "Stock", "MinimumPurchase"].includes(name)
+        [name]: ["price", "weight", "Stock"].includes(name)
           ? value.replace(/[^0-9.]/g, "")
           : value,
       }));
