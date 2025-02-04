@@ -46,6 +46,7 @@ function Navbar() {
   const handleCartClick = async () => {
     navigate("/checkout");
   };
+
   const handleSwitchDashboard = () => {
     if (userRole === "Admin") {
       navigate("/Admin/dashboard");

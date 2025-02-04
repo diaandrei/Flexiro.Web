@@ -4,13 +4,11 @@ import routes from "../../routes/routes";
 import { Box, CssBaseline } from "@mui/material";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import GlobalNotification from "../../GlobalNotification";
 import { SearchProvider } from "../../context/searchContext";
 
 const AdminLayout = ({ children }) => {
   return (
     <SearchProvider>
-      <GlobalNotification />
       <Box
         sx={{
           display: "flex",

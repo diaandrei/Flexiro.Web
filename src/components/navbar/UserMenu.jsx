@@ -28,7 +28,6 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
   };
 
   const handleLogoutClick = async () => {
-    debugger;
     try {
       if (userId) {
         const response = await axios.post(
@@ -52,6 +51,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
 
     handleClose();
   };
+
   const handleRegisterClick = () => navigate("/signup");
 
   return (

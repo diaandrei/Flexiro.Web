@@ -10,7 +10,6 @@ import { SearchProvider } from "../../context/searchContext";
 const CustomerLayout = ({ children }) => {
   return (
     <SearchProvider>
-      <GlobalNotification />
       <Box
         sx={{
           display: "flex",
