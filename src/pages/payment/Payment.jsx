@@ -120,6 +120,19 @@ const Payment = () => {
                 placeholder="***"
               />
             </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="CVV"
+                variant="outlined"
+                fullWidth
+                value={paymentDetails ? paymentDetails.cvv : cvv}
+                onChange={(e) => setCvv(e.target.value)}
+                type="number"
+                sx={{ mb: 2 }}
+                inputProps={{ maxLength: 3 }}
+                placeholder="***"
+              />
+            </Grid>
           </Grid>
         </Box>
         {errorMessage && (

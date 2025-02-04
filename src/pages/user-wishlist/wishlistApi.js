@@ -7,7 +7,6 @@ export const getWishlistProducts = async (userId) => {
         const response = await axios.get(`${API_ENDPOINT}/Customer/wishlist-products/${userId}`);
         return response.data;
     } catch (error) {
-        console.error("Error fetching wishlist products:", error);
         throw error;
     }
 };
@@ -19,7 +18,6 @@ export const removeProductFromWishlist = async (productId, userId) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error removing product from wishlist:", error);
         throw error;
     }
 };

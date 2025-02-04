@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from 'react-hot-toast';
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -18,8 +19,13 @@ export const addOrUpdateReview = async (reviewData) => {
                 },
             }
         );
+        debugger;
+        if (response.data.success == true) {
+            toast.success(response.data.title);
+        }
         return response.data;
     } catch (error) {
+
         throw error;
     }
 };
