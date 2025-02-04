@@ -37,10 +37,19 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
+  const getGuestId = () => {
+    let guestId = localStorage.getItem("guestId");
+    return guestId;
+  };
+  const getCurrentId = () => {
+    const userId = localStorage.getItem("userId");
+    return userId || getGuestId();
+  };
+
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isCartEmpty, setIsCartEmpty] = useState(true);
-  const userId = localStorage.getItem("userId");
+  const userId = getCurrentId();
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -59,7 +68,7 @@ export default function Checkout() {
 
   const fetchCart = async () => {
     try {
-      const userId = localStorage.getItem("userId");
+      const userId = getCurrentId();
       const response = await getCart(userId);
 
       if (response.success) {
@@ -78,15 +87,13 @@ export default function Checkout() {
       dispatch(getCartCount(userId));
     }
   }, [userId, dispatch]);
-
   const handleQuantityChange = async (cartItemId, newQuantity) => {
     try {
-      const userId = localStorage.getItem("userId");
-      const response = await updateCartItem(cartItemId, newQuantity, userId);
+      const currentId = getCurrentId();
+      const response = await updateCartItem(cartItemId, newQuantity, currentId);
 
       if (response) {
         setCart((prevCart) => {
-          // Update items array with new quantity and prices from response
           const updatedItems = prevCart.items.map((item) => {
             if (item.cartItemId === cartItemId) {
               return {
@@ -99,7 +106,6 @@ export default function Checkout() {
             return item;
           });
 
-          // Get values from the response data
           return {
             ...prevCart,
             items: updatedItems,
@@ -111,7 +117,7 @@ export default function Checkout() {
           };
         });
 
-        dispatch(getCartCount(userId));
+        dispatch(getCartCount(currentId));
       } else {
         toast.error(response.description || "Failed to update quantity");
       }
@@ -126,8 +132,9 @@ export default function Checkout() {
       if (!cartItemId) {
         toast.error("Plese select at least one product");
       }
-      const userId = localStorage.getItem("userId");
-      const response = await removeCartItem(cartItemId, userId);
+      const currentId = getCurrentId();
+      const response = await removeCartItem(cartItemId, currentId);
+
       if (response) {
         setCart((prevCart) => {
           const updatedItems = prevCart.items.filter(
@@ -145,7 +152,6 @@ export default function Checkout() {
             totalAmount: response.data.cart.totalAmount,
           };
 
-          // If no items remain in the cart, navigate to the root
           if (updatedItems.length === 0) {
             fetchCart();
           }
@@ -153,7 +159,7 @@ export default function Checkout() {
           return updatedCart;
         });
         if (userId) {
-          dispatch(getCartCount(userId));
+          dispatch(getCartCount(currentId));
         }
       } else {
       }
@@ -221,6 +227,7 @@ export default function Checkout() {
       </Box>
     );
   }
+
   if (!cart || cart.items.length === 0) {
     return (
       <Container maxWidth="sm" sx={{ py: 8, textAlign: "center" }}>
@@ -361,7 +368,7 @@ export default function Checkout() {
                             disableUnderline: true,
                             inputProps: {
                               style: {
-                                textAlign: "center", // Center-align the text
+                                textAlign: "center",
                               },
                             },
                           }}
@@ -465,7 +472,9 @@ export default function Checkout() {
                   </Typography>
                 </Box>
               )}
+
               <Divider sx={{ my: 3, borderColor: "#DDE2EB" }} />
+
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -483,7 +492,7 @@ export default function Checkout() {
                   variant="h6"
                   sx={{ fontWeight: "bold", color: "#333" }}
                 >
-                  £{cart.totalAmount}
+                  ${cart.totalAmount}
                 </Typography>
               </Box>
             </Box>

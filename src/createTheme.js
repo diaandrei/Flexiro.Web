@@ -18,7 +18,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto, Arial, sans-serif', // Global font
+    fontFamily: 'Calibri, Arial, sans-serif', // Global font
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,

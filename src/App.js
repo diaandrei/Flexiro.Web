@@ -34,7 +34,6 @@ function App() {
   }, [dispatch]);
   return (
     <>
-
       <Provider store={store}>
         <ToastContainer />
         <Toaster

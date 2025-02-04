@@ -28,7 +28,6 @@ export const updateCartItem = async (cartItemId, quantity, userId) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error updating cart item:", error);
     throw error;
   }
 };
