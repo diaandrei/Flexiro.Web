@@ -1,7 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addItemToCart, removeItemFromCart, clearCartitems, updateCartItemQuantity } from '../cart/cartApi';
+import { addItemToCart, removeItemFromCart, clearCartitems, updateCartItemQuantity, transferGuestCartApi } from '../cart/cartApi';
 import { getCartCount } from './cartCountSlice';
 import toast from 'react-hot-toast';
+import { v4 as uuidv4 } from 'uuid';
+
+const getGuestId = () => {
+  let guestId = localStorage.getItem('guestId');
+  if (!guestId) {
+    guestId = `guest_${uuidv4()}`;
+    localStorage.setItem('guestId', guestId);
+  }
+  return guestId;
+};
+const getCurrentId = () => {
+  const userId = localStorage.getItem('userId');
+  return userId || getGuestId();
+};
 
 export const addItem = createAsyncThunk(
   'cart/addItem',
@@ -16,9 +30,10 @@ export const addItem = createAsyncThunk(
           }
           return acc;
         }, 0);
+        const currentId = getCurrentId();
         const userId = localStorage.getItem('userId');
-        if (userId) {
-          await dispatch(getCartCount(userId)).unwrap();
+        if (currentId) {
+          await dispatch(getCartCount(currentId)).unwrap();
         }
         return { items: response.items, totalQuantity };
       }
@@ -34,12 +49,14 @@ export const updateItemQuantity = createAsyncThunk(
   'cart/updateItemQuantity',
   async ({ cartItemId, quantity }, { dispatch, rejectWithValue }) => {
     try {
+      const currentId = getCurrentId();
+
       const response = await updateCartItemQuantity(cartItemId, quantity);
       if (response) {
 
         const userId = localStorage.getItem('userId');
-        if (userId) {
-          await dispatch(getCartCount(userId)).unwrap();
+        if (currentId) {
+          await dispatch(getCartCount(currentId)).unwrap();
         }
         return response;
 
@@ -55,14 +72,32 @@ export const removeItem = createAsyncThunk(
   'cart/removeItem',
   async (cartItemId, { dispatch, rejectWithValue }) => {
     try {
+      const currentId = getCurrentId();
       const response = await removeItemFromCart(cartItemId);
       const userId = localStorage.getItem('userId');
-      if (userId) {
-        await dispatch(getCartCount(userId)).unwrap();
+      if (currentId) {
+        await dispatch(getCartCount(currentId)).unwrap();
       }
       return response.request.status;
     } catch (error) {
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const transferGuestCart = createAsyncThunk(
+  'cart/transferGuestCart',
+  async (userId, { dispatch }) => {
+    const guestId = localStorage.getItem('guestId');
+    if (!guestId) return;
+
+    try {
+      await transferGuestCartApi(guestId, userId);
+      localStorage.removeItem('guestId');
+      await dispatch(getCartCount(userId));
+    } catch (error) {
+
+      throw error;
     }
   }
 );
@@ -111,7 +146,6 @@ const cartSlice = createSlice({
       .addCase(updateItemQuantity.fulfilled, (state, action) => {
         const updatedItem = action.payload;
 
-        // Check if the item already exists in the state
         const existingItemIndex = state.items.findIndex(item => item.cartItemId === updatedItem.cartItemId);
 
         if (existingItemIndex !== -1) {
@@ -158,6 +192,17 @@ const cartSlice = createSlice({
       .addCase(clearCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(transferGuestCart.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(transferGuestCart.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(transferGuestCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });

@@ -34,6 +34,7 @@ export const NotificationProvider = ({ children }) => {
         const setupNotifications = async () => {
             if (currentUserId) {
                 await signalRService.startConnection(currentUserId);
+                
                 signalRService.setOnNotificationReceived((message) => {
                     setNotifications(prev => [...prev, { message, isRead: false }]);
                     setUnreadCount(prev => prev + 1);
