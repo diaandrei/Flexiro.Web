@@ -186,7 +186,7 @@ const WishlistPage = () => {
                                     <StyledTableCell align="left"
                                         onClick={(e) => handleNavigateToProduct(product.productId, e)}>
                                         <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                                            ${product.price.toFixed(2)}
+                                        £{product.price.toFixed(2)}
                                         </Typography>
                                     </StyledTableCell>
                                     <StyledTableCell align="center">

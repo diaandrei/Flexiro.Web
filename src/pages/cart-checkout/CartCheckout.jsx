@@ -339,7 +339,7 @@ export default function Checkout() {
                     </Grid>
                     <Grid item>
                       <Typography variant="h6" color="black">
-                        ${item.price}
+                        £{item.price}
                       </Typography>
                     </Grid>
                     <Grid item>
@@ -492,7 +492,7 @@ export default function Checkout() {
                   variant="h6"
                   sx={{ fontWeight: "bold", color: "#333" }}
                 >
-                  ${cart.totalAmount}
+                  £{cart.totalAmount}
                 </Typography>
               </Box>
             </Box>

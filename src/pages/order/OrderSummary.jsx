@@ -428,7 +428,7 @@ export default function OrderSummary() {
                     <Typography>{item.productName}</Typography>
                   </Box>
                   <Typography sx={{ fontWeight: 500 }}>
-                    ${item.pricePerUnit * item.quantity}
+                    £{item.pricePerUnit * item.quantity}
                   </Typography>
                 </Box>
               ))}

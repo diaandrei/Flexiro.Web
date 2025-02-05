@@ -257,7 +257,7 @@ const SellerWishlist = () => {
                                             py: 2,
                                         }}
                                     >
-                                        ${product.price.toFixed(2)}
+                                        £{product.price.toFixed(2)}
                                     </TableCell>
                                     <TableCell
                                         align="right"

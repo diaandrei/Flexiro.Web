@@ -156,7 +156,7 @@ const ImageCarousel = ({ topRated = [] }) => {
                   color="#262C36"
                   sx={{ fontWeight: "bold" }}
                 >
-                  ${product.pricePerItem}
+                  £{product.pricePerItem}
                 </Typography>
                 <Button
                   component={Link}
