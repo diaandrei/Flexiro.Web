@@ -74,12 +74,14 @@ const Payment = () => {
         <Typography variant="h4" sx={{ mb: 3, fontWeight: 600 }}>
           Payment Details
         </Typography>
+
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 500, mb: 2 }}>
             Your Cart Summary:
           </Typography>
           {renderCartSummary()}
         </Box>
+
         <Box sx={{ mb: 3 }}>
           <TextField
             label="Card Number"
@@ -103,21 +105,8 @@ const Payment = () => {
                 onChange={(e) => setExpiryDate(e.target.value)}
                 type="text"
                 sx={{ mb: 2 }}
-                inputProps={{ maxLength: 5 }}
+                inputProps={{ maxLength: 4 }}
                 placeholder="MM/YY"
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="CVV"
-                variant="outlined"
-                fullWidth
-                value={paymentDetails ? paymentDetails.cvv : cvv}
-                onChange={(e) => setCvv(e.target.value)}
-                type="number"
-                sx={{ mb: 2 }}
-                inputProps={{ maxLength: 3 }}
-                placeholder="***"
               />
             </Grid>
             <Grid item xs={6}>
@@ -135,6 +124,7 @@ const Payment = () => {
             </Grid>
           </Grid>
         </Box>
+
         {errorMessage && (
           <Typography color="error" sx={{ mb: 2 }}>
             {errorMessage}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
     Container,
     Typography,
@@ -82,7 +83,7 @@ function CustomerOrders() {
     const [searchTerm, setSearchTerm] = useState('');
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+    const location = useLocation();
     useEffect(() => {
         const fetchOrders = async () => {
             try {
@@ -91,10 +92,17 @@ function CustomerOrders() {
                     navigate('/login');
                     return;
                 }
+
                 const fetchedOrders = await getCustomerOrders(userId);
                 setOrders(fetchedOrders);
+                const params = new URLSearchParams(location.search);
+                const orderNumber = params.get('orderNumber');
+                if (orderNumber) {
+                    setSearchTerm(orderNumber);
+
+                }
             } catch (err) {
-                //setError('Failed to fetch active orders. Please try again later.');
+                setError('Failed to fetch orders. Please try again later.');
             } finally {
                 setLoading(false);
             }
@@ -106,7 +114,6 @@ function CustomerOrders() {
     const handleExpandClick = (orderId) => {
         setExpandedOrder(expandedOrder === orderId ? null : orderId);
     };
-
     const filteredOrders = orders.filter(order =>
         order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -119,16 +126,15 @@ function CustomerOrders() {
         );
     }
 
-    // Modify the error and empty state handling
-    if (error) {
+    if (error || orders.length === 0) {
         return (
             <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
                 <ShoppingBag sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
                 <Typography variant="h4" gutterBottom>
-                    There are no orders to show yet
+                There are no orders to show yet
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph>
-                    {error}
+                    {error || "Looks like you haven't made any orders. Start shopping to see your orders here!"}
                 </Typography>
                 <Button
                     variant="contained"
@@ -141,45 +147,6 @@ function CustomerOrders() {
                         '&:hover': {
                             bgcolor: "#D97C49",
                         },
-                    }}
-                >
-                    Start Shopping
-                </Button>
-            </Container>
-        );
-    }
-
-    if (orders.length === 0) {
-        return (
-            <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
-                <ShoppingBag sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-                <Typography variant="h4" gutterBottom>
-                    There are no orders to show yet
-                </Typography>
-                <Typography variant="body1" color="text.secondary" paragraph>
-                    Your order history is currently empty. Start shopping now to see your orders here!
-                </Typography>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    size="large"
-                    onClick={() => navigate('/')}
-                    sx={{
-                        mt: 2,
-                        bgcolor: "transparent",
-                        color: "#333333", 
-                        border: "2px solid #333333", 
-                        '&:hover': {
-                            bgcolor: "#333333", 
-                            color: "#FFFFFF", 
-                            border: "2px solid #333333",
-                        },
-                        borderRadius: "8px", 
-                        padding: "8px 16px", 
-                        textTransform: "none", 
-                        boxShadow: "none",     
-                        fontWeight: "bold",   
-                        transition: "all 0.3s ease-in-out",
                     }}
                 >
                     Start Shopping
@@ -213,7 +180,7 @@ function CustomerOrders() {
             {filteredOrders.length === 0 ? (
                 <Box textAlign="center" py={4}>
                     <Typography variant="h6" color="text.secondary">
-                        No orders match your search criteria. Please try again with different keywords or filters.
+                    No orders match your search criteria. Please try again with different keywords or filters.
                     </Typography>
                 </Box>
             ) : (
@@ -299,7 +266,7 @@ function CustomerOrders() {
                                             Shipping Address:
                                         </Typography>
                                         <Typography variant="body2">
-                                            {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.postcode}
+                                            {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.zipCode}
                                         </Typography>
                                     </Box>
                                     <Box sx={{ mt: 2 }}>

@@ -442,7 +442,7 @@ export default function OrderSummary() {
                   }}
                 >
                   <Typography sx={{ color: "#6B7280" }}>Subtotal</Typography>
-                  <Typography>${cartSummary?.subtotal}</Typography>
+                  <Typography>£{cartSummary?.subtotal}</Typography>
                 </Box>
                 <Box
                   sx={{
@@ -452,7 +452,7 @@ export default function OrderSummary() {
                   }}
                 >
                   <Typography sx={{ color: "#6B7280" }}>Shipping</Typography>
-                  <Typography>${cartSummary?.shippingCost || 0}</Typography>
+                  <Typography>£{cartSummary?.shippingCost || 0}</Typography>
                 </Box>
                 <Box
                   sx={{
@@ -462,7 +462,7 @@ export default function OrderSummary() {
                   }}
                 >
                   <Typography sx={{ color: "#6B7280" }}>Tax</Typography>
-                  <Typography>${cartSummary?.tax}</Typography>
+                  <Typography>£{cartSummary?.tax}</Typography>
                 </Box>
                 <Box
                   sx={{
@@ -472,7 +472,7 @@ export default function OrderSummary() {
                   }}
                 >
                   <Typography sx={{ color: "#6B7280" }}>Discount</Typography>
-                  <Typography>${cartSummary?.totalDiscount}</Typography>
+                  <Typography>£{cartSummary?.totalDiscount}</Typography>
                 </Box>
               </Box>
 
@@ -489,7 +489,7 @@ export default function OrderSummary() {
               >
                 <Typography sx={{ fontWeight: 600 }}>Order Total</Typography>
                 <Typography sx={{ fontWeight: 600 }}>
-                  ${cartSummary?.total}
+                  £{cartSummary?.total}
                 </Typography>
               </Box>
 

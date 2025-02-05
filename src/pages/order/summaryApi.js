@@ -58,6 +58,7 @@ export const createPaymentIntent = async (userId, amount) => {
     throw error;
   }
 };
+
 export const getCustomerOrders = async (userId) => {
   try {
     const response = await axios.get(`${API_ENDPOINT}/Customer/orders`, {
