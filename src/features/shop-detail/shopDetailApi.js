@@ -11,7 +11,7 @@ export const fetchShopProducts = createAsyncThunk(
   async ({ shopId, userId }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${API_ENDPOINT}/Customer/shops/${shopId}/products`,
+        `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/shops/${shopId}/products`,
         {
           params: { userId },
         }
