@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -15,6 +15,7 @@ import CustomLoader from "../../../CustomLoader";
 import GlobalNotification from "../../../GlobalNotification";
 import { useNavigate, Link } from "react-router-dom";
 import { setUser } from "../../../features/user/userSlice";
+import { transferGuestCart } from "../../../features/cart/cartSlice";
 import {
   Container,
   Paper,
@@ -26,6 +27,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
+import toast from "react-hot-toast";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -35,7 +37,6 @@ const SignInForm = () => {
     email: "",
     password: "",
   });
-
   const dispatch = useDispatch();
   const notificationRef = useRef();
   const [loadingItems, setLoadingItems] = useState(false);
@@ -52,9 +53,8 @@ const SignInForm = () => {
   const validateForm = () => {
     const newErrors = { email: "", password: "" };
     let isValid = true;
-
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!email.trim()) {
       newErrors.email = "Email is required";
       isValid = false;
@@ -62,8 +62,6 @@ const SignInForm = () => {
       newErrors.email = "Invalid email format";
       isValid = false;
     }
-
-    // Password validation
     if (!password.trim()) {
       newErrors.password = "Password is required";
       isValid = false;
@@ -71,68 +69,65 @@ const SignInForm = () => {
       newErrors.password = "Password must be at least 6 characters";
       isValid = false;
     }
-
     setErrors(newErrors);
     return isValid;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Validate form before submission
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
     setLoadingItems(true);
 
     try {
-      const resultAction = await dispatch(signInUser({ email, password }));
+      const resultAction = await dispatch(
+        signInUser({ email, password })
+      ).unwrap();
 
-      if (signInUser.rejected.match(resultAction)) {
-        // Handle rejection
-        setErrors((prev) => ({
-          ...prev,
-          password: "Invalid email or password",
-        }));
-      } else {
-        const {
+      const {
+        userId,
+        token,
+        email: userEmail,
+        role,
+        name,
+        sellerId,
+        shopId,
+        shopName,
+        ownerName,
+      } = resultAction;
+
+      dispatch(
+        setUser({
           userId,
           token,
-          email,
+          email: userEmail,
           role,
           name,
           sellerId,
           shopId,
           shopName,
           ownerName,
-        } = resultAction.payload;
+        })
+      );
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("user", JSON.stringify(resultAction));
 
-        dispatch(
-          setUser({
-            userId,
-            token,
-            email,
-            role,
-            name,
-            sellerId,
-            shopId,
-            shopName,
-            ownerName,
-          })
-        );
+      const guestId = localStorage.getItem("guestId");
+      if (guestId) {
+        await dispatch(transferGuestCart(userId));
+      }
 
-        setEmail("");
-        setPassword("");
+      setEmail("");
+      setPassword("");
 
-        if (role === "Admin") {
-          navigate("/");
-        } else if (role === "Seller") {
-          navigate("/");
-        } else {
-          navigate("/");
-        }
+      if (role === "Admin") {
+        navigate("/");
+      } else if (role === "Seller") {
+        navigate("/");
+      } else {
+        navigate("/");
       }
     } catch (error) {
+      setErrors((prev) => ({ ...prev, password: "Invalid email or password" }));
     } finally {
       setLoadingItems(false);
     }
@@ -197,7 +192,6 @@ const SignInForm = () => {
         >
           Welcome back! Please sign in to continue
         </Typography>
-
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <TextField
             fullWidth
@@ -279,7 +273,6 @@ const SignInForm = () => {
             {loadingItems ? <CustomLoader circlesize={20} /> : "Sign In"}
           </Button>
         </Box>
-
         <Typography
           variant="body2"
           color="textSecondary"

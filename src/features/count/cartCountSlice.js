@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchCartCount } from './cartCountApi';
 
-// Async thunk to fetch cart count
 export const getCartCount = createAsyncThunk(
     'cartCount/getCartCount',
     async (userId, { rejectWithValue }) => {
@@ -18,9 +17,9 @@ export const getCartCount = createAsyncThunk(
 const cartCountSlice = createSlice({
     name: 'cartCount',
     initialState: {
-        count: 0,      
+        count: 0, 
         loading: false, 
-        error: null,    
+        error: null, 
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -30,12 +29,12 @@ const cartCountSlice = createSlice({
                 state.error = null;
             })
             .addCase(getCartCount.fulfilled, (state, action) => {
-                state.count = action.payload; // Update the cart count
+                state.count = action.payload;
                 state.loading = false;
             })
             .addCase(getCartCount.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload; // Capture error
+                state.error = action.payload;
             });
     },
 });

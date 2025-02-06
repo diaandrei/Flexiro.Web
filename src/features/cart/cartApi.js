@@ -1,11 +1,30 @@
 import { postRequest, deleteRequest, putRequest } from '../../api/api';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
-const getCurrentId = () => {
-  const userId = localStorage.getItem('userId');
-  return userId || getGuestId();
+const ensureGuestIdSync = async () => {
+  let guestId = localStorage.getItem('guestId');
+  if (!guestId) {
+    return null;
+  }
+
+  try {
+    const response = await axios.get(`/api/Customer/cart?userId=${guestId}`);
+    if (response.data && response.data.success && response.data.content) {
+      const dbGuestId = response.data.content.GuestUserId || response.data.content.UserId;
+      if (dbGuestId && dbGuestId !== guestId) {
+        console.log("Updating guestId in local storage from", guestId, "to", dbGuestId);
+        localStorage.setItem('guestId', dbGuestId);
+        guestId = dbGuestId;
+      }
+    }
+  } catch (error) {
+    console.error("Error syncing guest id:", error);
+  }
+  return guestId;
 };
+
 const getGuestId = () => {
   let guestId = localStorage.getItem('guestId');
   if (!guestId) {
@@ -15,10 +34,16 @@ const getGuestId = () => {
   return guestId;
 };
 
-export const addItemToCart = async (item) => {
+export const getCurrentId = async () => {
+  const userId = localStorage.getItem('userId');
+  if (userId) return userId;
+  let guestId = await ensureGuestIdSync();
+  return guestId || getGuestId();
+};
 
-  const isGuest = !localStorage.getItem('userId')
-  const currentId = getCurrentId();
+export const addItemToCart = async (item) => {
+  const isGuest = !localStorage.getItem('userId');
+  const currentId = await getCurrentId();
   const requestPayload = {
     Items: [
       {
@@ -30,7 +55,6 @@ export const addItemToCart = async (item) => {
     ],
     IsGuest: isGuest,
   };
-
   const response = await postRequest(`/customer/add-product-to-cart?userId=${currentId}`, requestPayload);
 
   if (response.request.status === 200) {
@@ -43,27 +67,22 @@ export const addItemToCart = async (item) => {
   }
 };
 
-// Remove an item from the cart by cartItemId
 export const removeItemFromCart = async (cartItemId) => {
-  const userId = localStorage.getItem("userId");
-  const currentId = getCurrentId();
+  const currentId = await getCurrentId();
   const response = await deleteRequest(`/customer/RemoveItemFromCart?cartItemId=${cartItemId}&userId=${currentId}`);
 
   if (response.request.status === 200) {
     return response;
-
   } else {
     throw new Error(response.data.title);
   }
 };
 
 export const updateCartItemQuantity = async (cartItemId, quantity) => {
-  const userId = localStorage.getItem("userId");
-  const currentId = getCurrentId();
+  const currentId = await getCurrentId();
   const response = await putRequest(`/customer/UpdateCartItemQuantity?cartItemId=${cartItemId}&quantity=${quantity}&userId=${currentId}`);
 
   if (response.status === 200) {
-
     const responedata = {
       cartItemId: response.data.data.cartItemId,
       cartId: response.data.data.cartId,
@@ -78,16 +97,14 @@ export const updateCartItemQuantity = async (cartItemId, quantity) => {
     };
 
     return responedata;
-
   } else {
     throw new Error(response.data.title);
   }
 };
 
-// Clear all items from the cart for a given user
 export const clearCartitems = async () => {
-  const userId = localStorage.getItem("userId");
-  const response = await postRequest(`/customer/clearCart`, { userId });
+  const currentId = await getCurrentId();
+  const response = await postRequest(`/customer/clearCart`, { userId: currentId });
 
   if (response.data.success) {
     return response.data.content;
@@ -97,7 +114,6 @@ export const clearCartitems = async () => {
 };
 
 export const transferGuestCartApi = async (guestId, userId) => {
-
   const response = await postRequest('/Customer/transfer-guest-cart', {
     guestId,
     userId

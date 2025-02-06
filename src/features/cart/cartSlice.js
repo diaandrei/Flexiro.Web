@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addItemToCart, removeItemFromCart, clearCartitems, updateCartItemQuantity, transferGuestCartApi } from '../cart/cartApi';
+import { addItemToCart, removeItemFromCart, clearCartitems, updateCartItemQuantity, transferGuestCartApi, getCurrentId } from '../cart/cartApi';
 import { getCartCount } from './cartCountSlice';
 import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,12 +7,13 @@ import { v4 as uuidv4 } from 'uuid';
 const getGuestId = () => {
   let guestId = localStorage.getItem('guestId');
   if (!guestId) {
-    guestId = `guest_${uuidv4()}`;
+    guestId = `${uuidv4()}`;
     localStorage.setItem('guestId', guestId);
   }
   return guestId;
 };
-const getCurrentId = () => {
+
+const getCurrentIdSync = () => {
   const userId = localStorage.getItem('userId');
   return userId || getGuestId();
 };
@@ -25,19 +26,14 @@ export const addItem = createAsyncThunk(
       if (Array.isArray(response.items) && response.items.length > 0) {
         const totalQuantity = response.items.reduce((acc, currentItem) => {
           const quantity = Number(currentItem.quantity);
-          if (!isNaN(quantity)) {
-            return acc + quantity;
-          }
-          return acc;
+          return !isNaN(quantity) ? acc + quantity : acc;
         }, 0);
-        const currentId = getCurrentId();
-        const userId = localStorage.getItem('userId');
+        const currentId = await getCurrentId();
         if (currentId) {
           await dispatch(getCartCount(currentId)).unwrap();
         }
         return { items: response.items, totalQuantity };
       }
-
     } catch (error) {
       toast.error(error.response.data.title);
       return rejectWithValue(error.message);
@@ -49,17 +45,13 @@ export const updateItemQuantity = createAsyncThunk(
   'cart/updateItemQuantity',
   async ({ cartItemId, quantity }, { dispatch, rejectWithValue }) => {
     try {
-      const currentId = getCurrentId();
-
+      const currentId = await getCurrentId();
       const response = await updateCartItemQuantity(cartItemId, quantity);
       if (response) {
-
-        const userId = localStorage.getItem('userId');
         if (currentId) {
           await dispatch(getCartCount(currentId)).unwrap();
         }
         return response;
-
       }
       throw new Error('Invalid response format or empty cart items array');
     } catch (error) {
@@ -72,9 +64,8 @@ export const removeItem = createAsyncThunk(
   'cart/removeItem',
   async (cartItemId, { dispatch, rejectWithValue }) => {
     try {
-      const currentId = getCurrentId();
+      const currentId = await getCurrentId();
       const response = await removeItemFromCart(cartItemId);
-      const userId = localStorage.getItem('userId');
       if (currentId) {
         await dispatch(getCartCount(currentId)).unwrap();
       }
@@ -90,13 +81,11 @@ export const transferGuestCart = createAsyncThunk(
   async (userId, { dispatch }) => {
     const guestId = localStorage.getItem('guestId');
     if (!guestId) return;
-
     try {
       await transferGuestCartApi(guestId, userId);
       localStorage.removeItem('guestId');
       await dispatch(getCartCount(userId));
     } catch (error) {
-
       throw error;
     }
   }
@@ -145,9 +134,7 @@ const cartSlice = createSlice({
       })
       .addCase(updateItemQuantity.fulfilled, (state, action) => {
         const updatedItem = action.payload;
-
         const existingItemIndex = state.items.findIndex(item => item.cartItemId === updatedItem.cartItemId);
-
         if (existingItemIndex !== -1) {
           state.items[existingItemIndex] = {
             ...state.items[existingItemIndex],
@@ -157,7 +144,6 @@ const cartSlice = createSlice({
         } else {
           state.items.push(updatedItem);
         }
-
         state.totalQuantity = state.items.reduce((total, item) => total + item.quantity, 0);
         state.loading = false;
         state.error = null;
@@ -165,7 +151,7 @@ const cartSlice = createSlice({
       .addCase(updateItemQuantity.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      }) 
+      })
       .addCase(removeItem.pending, (state) => {
         state.loading = true;
       })

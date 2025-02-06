@@ -89,10 +89,7 @@ const routes = [
       {
         path: "/checkout",
         element: (
-          <CustomerPrivateRoute>
-            {" "}
             <CartCheckout />
-          </CustomerPrivateRoute>
         ),
         title: "Cart Checkout",
       },
