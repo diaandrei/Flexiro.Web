@@ -4,7 +4,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 export const getCartSummary = async (userId) => {
   try {
-    const response = await axios.get(`${API_ENDPOINT}/Customer/cart/summary`, {
+    const response = await axios.get(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/cart/summary`, {
       params: { userId },
     });
     return response.data;
@@ -17,7 +17,7 @@ export const getCartSummary = async (userId) => {
 export const placeOrder = async (orderData) => {
   try {
     const response = await axios.post(
-      `${API_ENDPOINT}/Customer/order/place`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/order/place`,
       orderData
     );
     return response.data;
@@ -30,7 +30,7 @@ export const fetchAddress = async () => {
   try {
     const userId = localStorage.getItem("userId");
     const response = await axios.get(
-      `${API_ENDPOINT}/Customer/GetAddressBook`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/GetAddressBook`,
       {
         params: { userId },
       }
@@ -45,7 +45,7 @@ export const fetchAddress = async () => {
 export const createPaymentIntent = async (userId, amount) => {
   try {
     const response = await axios.post(
-      `${API_ENDPOINT}/payment/create-payment-intent`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/payment/create-payment-intent`,
       {
         OrderId: userId,
         Amount: Math.round(amount * 100),
@@ -61,7 +61,7 @@ export const createPaymentIntent = async (userId, amount) => {
 
 export const getCustomerOrders = async (userId) => {
   try {
-    const response = await axios.get(`${API_ENDPOINT}/Customer/orders`, {
+    const response = await axios.get(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/orders`, {
       params: { userId },
     });
     return response.data;

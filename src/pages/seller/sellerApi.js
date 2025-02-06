@@ -6,7 +6,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 export const fetchSellerDashboardData = async (shopId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/Seller/dashboard/${shopId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/dashboard/${shopId}`
     );
     return response.data;
   } catch (error) {
@@ -17,7 +17,7 @@ export const fetchSellerDashboardData = async (shopId) => {
 export const fetchSellerProducts = async (shopId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/Seller/getallproducts/${shopId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/getallproducts/${shopId}`
     );
     return response.data;
   } catch (error) {
@@ -32,7 +32,7 @@ export const changeProductStatus = async (productId, newStatus) => {
       newStatus: newStatus,
     };
     const response = await axios.put(
-      `${API_ENDPOINT}/Seller/product/status`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/product/status`,
       statusData
     );
     if (response.data.success === true) {
@@ -47,7 +47,7 @@ export const changeProductStatus = async (productId, newStatus) => {
 export const fetchShopDetails = async (ownerId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/Seller/GetShopByOwner/${ownerId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/GetShopByOwner/${ownerId}`
     );
     return response.data;
   } catch (error) {
@@ -64,7 +64,7 @@ export const updateSellerContactInfo = async (sellerId, email, phoneNumber) => {
     };
 
     const response = await axios.put(
-      `${API_ENDPOINT}/UpdateSellerContactInfo`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/UpdateSellerContactInfo`,
       sellerData
     );
 
@@ -97,7 +97,7 @@ export const changeShopStatus = async (
       ClosingDay: editedClosingDay,
     };
     const response = await axios.put(
-      `${API_ENDPOINT}/Seller/ChangeShopStatus`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/ChangeShopStatus`,
       statusData
     );
     if (response.data.success === true) {
@@ -127,7 +127,7 @@ export const updateShopInfo = async (
     }
 
     const response = await axios.put(
-      `${API_ENDPOINT}/Seller/updateshop`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/updateshop`,
       formData
     );
     return response;
@@ -139,7 +139,7 @@ export const updateShopInfo = async (
 export const getSellerProfile = async (sellerId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/seller/profile/${sellerId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/seller/profile/${sellerId}`
     );
     return response.data;
   } catch (error) {
@@ -149,7 +149,7 @@ export const getSellerProfile = async (sellerId) => {
 
 export const fetchCategories = async () => {
   try {
-    const response = await axios.get(`${API_ENDPOINT}/Seller/GetAllCategories`);
+    const response = await axios.get(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/GetAllCategories`);
 
     // Handle different response formats
     if (response.data && Array.isArray(response.data)) {
@@ -185,7 +185,7 @@ export const addProduct = async (productData) => {
       productData.set("price", parseInt(price, 10));
     }
     const response = await axios.post(
-      `${API_ENDPOINT}/Seller/product/add`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/product/add`,
       productData,
       {
         headers: {
@@ -212,7 +212,7 @@ export const addProduct = async (productData) => {
 
 export const fetchOrdersByShop = async (shopId) => {
   try {
-    const response = await axios.get(`${API_ENDPOINT}/Seller/orders`, {
+    const response = await axios.get(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/orders`, {
       params: { shopId },
     });
     return response.data;
@@ -229,7 +229,7 @@ export const changeOrderStatus = async (orderId, newStatus) => {
     };
 
     const response = await axios.put(
-      `${API_ENDPOINT}/Seller/order/update-status`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/order/update-status`,
       request
     );
     if (response.data.success === true) {
@@ -247,7 +247,7 @@ export const changeOrderStatus = async (orderId, newStatus) => {
 export const fetchWishlistProducts = async (shopId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/Seller/wishlist-products/${shopId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/wishlist-products/${shopId}`
     );
     return response.data;
   } catch (error) {
@@ -257,7 +257,7 @@ export const fetchWishlistProducts = async (shopId) => {
 
 export const updateProductDiscount = async (productId, discountPercentage) => {
   try {
-    const response = await axios.put(`${API_ENDPOINT}/Seller/product/update-discount/${productId}`, {
+    const response = await axios.put(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/product/update-discount/${productId}`, {
       discountPercentage
     });
     return response.data;

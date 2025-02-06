@@ -92,7 +92,7 @@ export default function OrderSummary() {
   const fetchClientToken = async () => {
     try {
       const response = await axios.post(
-        `${API_ENDPOINT}/payment/generate-client-token`
+        `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/payment/generate-client-token`
       );
       setClientToken(response.data.clientToken);
     } catch (err) {
@@ -189,7 +189,7 @@ export default function OrderSummary() {
 
         // Process payment
         const paymentResponse = await axios.post(
-          `${API_ENDPOINT}/payment/process-payment`,
+          `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/payment/process-payment`,
           {
             orderId: localStorage.getItem("userId"),
             paymentMethodNonce: nonce,

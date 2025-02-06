@@ -31,7 +31,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
     try {
       if (userId) {
         const response = await axios.post(
-          `${API_ENDPOINT}/Customer/clearCart?userId=${userId}`
+          `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/clearCart?userId=${userId}`
         );
 
         if (response.data.success) {

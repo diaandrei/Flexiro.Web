@@ -17,7 +17,7 @@ export const changeshopstatus = async (shopId, newStatus) => {
       newStatus: newStatus,
     };
     const response = await axios.put(
-      `${API_ENDPOINT}/Admin/change-shop-status`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Admin/change-shop-status`,
       statusData
     );
     

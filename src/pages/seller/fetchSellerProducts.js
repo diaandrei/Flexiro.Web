@@ -5,7 +5,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 export const fetchSellerProducts = async (shopId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/Seller/getallproducts/${shopId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Seller/getallproducts/${shopId}`
     );
     return response.data;
   } catch (error) {

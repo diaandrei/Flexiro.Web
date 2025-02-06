@@ -12,7 +12,7 @@ const BraintreePayment = ({ onInstance, onError }) => {
     const fetchClientToken = async () => {
       try {
         const response = await fetch(
-          `${API_ENDPOINT}/payment/generate-client-token`,
+          `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/payment/generate-client-token`,
           {
             method: "POST",
             headers: {

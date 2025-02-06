@@ -11,7 +11,7 @@ export const addOrUpdateReview = async (reviewData) => {
         formData.append('rating', reviewData.rating);
 
         const response = await axios.post(
-            `${API_ENDPOINT}/Customer/product/review`,
+            `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/product/review`,
             formData,
             {
                 headers: {
@@ -33,7 +33,7 @@ export const addOrUpdateReview = async (reviewData) => {
 export const getUserRating = async (productId, userId) => {
     try {
         const response = await axios.get(
-            `${API_ENDPOINT}/Customer/product/review/user-rating`,
+            `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/product/review/user-rating`,
             {
                 params: {
                     productId,

@@ -6,7 +6,7 @@ export const fetchProductDetails = createAsyncThunk(
   async ({ productId, userId }, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `${API_ENDPOINT}/Customer/product/details/${productId}?userId=${userId}`
+        `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/product/details/${productId}?userId=${userId}`
       );
       if (!response.ok) {
         return rejectWithValue("Unable to retrieve Product Information");

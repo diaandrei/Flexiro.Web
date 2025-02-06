@@ -56,7 +56,7 @@ export const NotificationProvider = ({ children }) => {
 
         try {
             const response = await axios.get(
-                `${API_ENDPOINT}/notifications/${userId}`
+                `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/notifications/${userId}`
             );
 
             if (response.status === 200) {
@@ -73,7 +73,7 @@ export const NotificationProvider = ({ children }) => {
         if (!currentUserId) return;
 
         try {
-            const response = await fetch(`${API_ENDPOINT}/notifications/mark-as-read/${currentUserId}`, {
+            const response = await fetch(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/notifications/mark-as-read/${currentUserId}`, {
                 method: 'POST',
             });
             if (response.ok) {

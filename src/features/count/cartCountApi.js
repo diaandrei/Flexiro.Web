@@ -5,7 +5,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 export const fetchCartCount = async (userId) => {
   try {
     const response = await axios.get(
-      `${API_ENDPOINT}/Customer/cart/item-count/${userId}`
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/cart/item-count/${userId}`
     );
     return response.data;
   } catch (error) {

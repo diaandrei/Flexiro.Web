@@ -4,7 +4,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 export const getCart = async (userId) => {
   try {
-    const response = await axios.get(`${API_ENDPOINT}/Customer/cart`, {
+    const response = await axios.get(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/cart`, {
       params: { userId },
     });
 
@@ -22,7 +22,7 @@ export const updateCartItem = async (cartItemId, quantity, userId) => {
       userId: userId,
     };
     const response = await axios.put(
-      `${API_ENDPOINT}/Customer/UpdateCartItemQuantity`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/UpdateCartItemQuantity`,
       cartData
     );
 
@@ -40,7 +40,7 @@ export const removeCartItem = async (cartItemId, userId) => {
     };
    
     const response = await axios.delete(
-      `${API_ENDPOINT}/Customer/RemoveItemFromCart`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/RemoveItemFromCart`,
       {
         params: {
           cartItemId,
@@ -57,7 +57,7 @@ export const removeCartItem = async (cartItemId, userId) => {
 
 export const applyCoupon = async (cartId, couponCode) => {
   try {
-    const response = await axios.post(`${API_ENDPOINT}/cart/coupon`, {
+    const response = await axios.post(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/cart/coupon`, {
       cartId,
       couponCode,
     });
