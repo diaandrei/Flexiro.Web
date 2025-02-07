@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography, Button, Paper, Rating } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { addItem, removeItem } from "../../features/cart/cartSlice";
 import {
   addToWishlistAsync,
   removeFromWishlistAsync,
 } from "../../features/wishlist/wishlistSlice";
+import { useNavigate } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function ProductCard({
   id,
@@ -24,8 +25,10 @@ export default function ProductCard({
   viewType,
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
+  const user = useSelector((state) => state.signIn.user);
 
   const [cartButtonText, setCartButtonText] = useState("View Product");
   const [wishlistStatus, setWishlistStatus] = useState(isInWishlist);
@@ -57,6 +60,12 @@ export default function ProductCard({
 
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
+
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     const product = {
       id,
       image,

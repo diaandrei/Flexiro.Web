@@ -84,23 +84,25 @@ const WishlistPage = () => {
         fetchWishlistProducts();
     }, []);
 
-    const handleRemoveFromWishlist = async (productId) => {
+    const handleRemoveFromWishlist = async (productId, shopId) => {
         try {
-            const userId = localStorage.getItem('userId');
-            if (!userId) throw new Error('User ID not found');
-            const response = await removeProductFromWishlist(productId, userId);
-            if (response.success) {
-                setWishlistProducts(prevProducts =>
-                    prevProducts.filter(product => product.productId !== productId)
-                );
-                toast.success("Product successfully removed from your wishlist");
-            } else {
-                throw new Error(response.description || 'Failed to remove product from wishlist');
-            }
+          const userId = localStorage.getItem("userId");
+          if (!userId) throw new Error("User ID not found");
+      
+          const response = await removeProductFromWishlist(productId, userId, shopId);
+          if (response.success) {
+            setWishlistProducts((prevProducts) =>
+              prevProducts.filter((product) => product.productId !== productId)
+            );
+            toast.success("Product successfully removed from your wishlist");
+          } else {
+            throw new Error(response.description || "Failed to remove product from wishlist");
+          }
         } catch (err) {
-            throw new Error(err.message);
+          throw new Error(err.message);
         }
-    };
+      };
+      
 
     const handleCloseSnackbar = () => {
         setSnackbar({ ...snackbar, open: false });
@@ -194,7 +196,7 @@ const WishlistPage = () => {
                                             variant="outlined"
                                             size="small"
                                             startIcon={<Favorite />}
-                                            onClick={() => handleRemoveFromWishlist(product.productId)}
+                                            onClick={() => handleRemoveFromWishlist(product.productId, product.shopId)}
                                         >
                                             Remove
                                         </StyledButton>

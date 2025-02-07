@@ -11,10 +11,10 @@ export const getWishlistProducts = async (userId) => {
     }
 };
 
-export const removeProductFromWishlist = async (productId, userId) => {
+export const removeProductFromWishlist = async (productId, userId, shopId) => {
     try {
         const response = await axios.delete(`https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/remove-product-wishlist`, {
-            params: { productId, userId },
+            params: { productId, userId, shopId },
         });
         return response.data;
     } catch (error) {
