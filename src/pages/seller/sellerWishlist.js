@@ -102,7 +102,7 @@ const SellerWishlist = () => {
                         borderRadius: 2,
                     }}
                 >
-                    <Typography variant="h6" color="text.secondary">
+                    <Typography variant="h6" color="black">
                     No products in your wishlist yet
                     </Typography>
                 </Paper>

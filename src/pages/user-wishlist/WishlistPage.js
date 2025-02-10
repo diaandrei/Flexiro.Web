@@ -63,26 +63,27 @@ const WishlistPage = () => {
     const [error, setError] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '' });
     const navigate = useNavigate();
-    useEffect(() => {
-        const fetchWishlistProducts = async () => {
-            try {
-                const userId = localStorage.getItem('userId');
-                if (!userId) throw new Error('User ID not found');
-                const response = await getWishlistProducts(userId);
-                if (response.success) {
-                    setWishlistProducts(response.content);
-                } else {
-                    throw new Error(response.description || 'Failed to fetch wishlist products');
-                }
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
 
-        fetchWishlistProducts();
-    }, []);
+    useEffect(() => {
+    const fetchWishlistProducts = async () => {
+        try {
+            const userId = localStorage.getItem('userId');
+            if (!userId) throw new Error('User ID not found');
+            const response = await getWishlistProducts(userId);
+            if (response.success) {
+                setWishlistProducts(response.content);
+            } else {
+                throw new Error(response.description || 'Failed to fetch wishlist products');
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchWishlistProducts();
+}, []);
 
     const handleRemoveFromWishlist = async (productId, shopId) => {
         try {
@@ -125,7 +126,7 @@ const WishlistPage = () => {
     if (error) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-                <Typography color="error" variant="h6">{"No products in your wishlist"}</Typography>
+                <Typography color="black" variant="h6">{"No products in your wishlist"}</Typography>
             </Box>
         );
     }
@@ -196,9 +197,10 @@ const WishlistPage = () => {
                                             variant="outlined"
                                             size="small"
                                             startIcon={<Favorite />}
-                                            onClick={() => handleRemoveFromWishlist(product.productId, product.shopId)}
+                                            onClick={() => handleRemoveFromWishlist(product.productId, product.shopId || 0)}
                                         >
                                             Remove
+                                            
                                         </StyledButton>
                                     </StyledTableCell>
                                 </TableRow>

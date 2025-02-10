@@ -19,7 +19,6 @@ export const addOrUpdateReview = async (reviewData) => {
                 },
             }
         );
-        debugger;
         if (response.data.success == true) {
             toast.success(response.data.title);
         }
