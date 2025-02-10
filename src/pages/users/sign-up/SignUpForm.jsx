@@ -23,8 +23,10 @@ import {
   signUpUser,
   selectAuthError,
 } from "../../../features/sign-up/signUpSlice";
+import { signInUser } from "../../../features/sign-in/signInSlice";
 import CustomLoader from "../../../CustomLoader";
-import GlobalNotification from "../../../GlobalNotification";
+import toast from "react-hot-toast";
+import { setUser } from "../../../features/user/userSlice";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const SignUpForm = () => {
@@ -83,10 +85,39 @@ const SignUpForm = () => {
       );
 
       if (signUpUser.fulfilled.match(resultAction)) {
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        navigate("/login");
+        const resultLogin = await dispatch(signInUser({ email, password }));
+        if (signInUser.fulfilled.match(resultLogin)) {
+          const {
+            userId,
+            token,
+            email,
+            role,
+            name,
+            sellerId,
+            shopId,
+            shopName,
+            ownerName,
+          } = resultLogin.payload;
+          dispatch(
+            setUser({
+              userId,
+              token,
+              email,
+              role,
+              name,
+              sellerId,
+              shopId,
+              shopName,
+              ownerName,
+            })
+          );
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          navigate("/");
+        } else {
+          toast.error("Login failed. Please try again later.");
+        }
       } else if (signUpUser.rejected.match(resultAction)) {
       }
     } catch (error) {
@@ -112,7 +143,6 @@ const SignUpForm = () => {
         background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
       }}
     >
-      <GlobalNotification ref={notificationRef} />
       <Paper
         elevation={6}
         sx={{
@@ -154,8 +184,9 @@ const SignUpForm = () => {
           align="center"
           sx={{ mb: 3 }}
         >
-          Please follow the instructions to register and start exploring.
+          Please follow the instructions to register and start exploring
         </Typography>
+
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <TextField
             fullWidth
@@ -250,6 +281,7 @@ const SignUpForm = () => {
             {loadingItems ? <CustomLoader circlesize={20} /> : "Create Account"}
           </Button>
         </Box>
+
         <Typography
           variant="body2"
           color="textSecondary"

@@ -21,9 +21,13 @@ import {
 } from "../../features/registerSeller/registerSellerSlice";
 import CustomLoader from "../../CustomLoader";
 import toast from "react-hot-toast";
-import GlobalNotification from "../../GlobalNotification";
+import enLocale from "date-fns/locale/en-US";
+import { signInUser } from "../../features/sign-in/signInSlice";
+import { setUser } from "../../features/user/userSlice";
+import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { PhotoCamera, Visibility, VisibilityOff } from "@mui/icons-material";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -57,69 +61,34 @@ const RegisterSellerForm = () => {
     contactNo: "",
     country: "",
     city: "",
-    postcode: "",
+    zipCode: "",
     storeDescription: "",
     email: "",
     password: "",
     openingDate: "",
-    openingTime: "",
-    closingTime: "",
+    openingTime: dayjs(),
+    closingTime: dayjs(),
     openingDay: "",
     closingDay: "",
   });
-
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const notificationRef = useRef();
+  const localeMap = {
+    en: enLocale,
+  };
   const authError = useSelector(selectAuthError);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [locale, setLocale] = React.useState("ru");
+  const [value, setValue] = React.useState(new Date());
 
-  const formatFieldName = (name) => {
-    switch (name) {
-      case "userName":
-        return "Username";
-      case "ownerName":
-        return "Owner Name";
-      case "storeName":
-        return "Store Name";
-      case "contactNo":
-        return "Contact Number";
-      case "email":
-        return "Email";
-      case "password":
-        return "Password";
-      case "country":
-        return "Country";
-      case "city":
-        return "City";
-      case "postcode":
-        return "Postcode";
-      case "slogan":
-        return "Slogan";
-      case "storeDescription":
-        return "Store Description";
-      case "openingDate":
-        return "Opening Date";
-      case "openingTime":
-        return "Opening Time";
-      case "closingTime":
-        return "Closing Time";
-      case "openingDay":
-        return "Opening Day";
-      case "closingDay":
-        return "Closing Day";
-      case "shopLogo":
-        return "Shop Logo";
-      default:
-        return name;
-    }
+  const selectLocale = (newLocale) => {
+    setLocale(newLocale);
   };
-
   const validateField = (name, value) => {
-    if (value === "" || value === null)
-      return `${formatFieldName(name)} cannot be empty`;
+    if (value === "" || value === null) return `${name} cannot be empty`;
     switch (name) {
       case "userName":
         return value.length < 3
@@ -174,10 +143,18 @@ const RegisterSellerForm = () => {
 
       case "openingTime":
       case "closingTime":
-        const timeValue = parseInt(value);
-        return timeValue < 1 || timeValue > 24
-          ? `${name} must be between 1 and 24`
-          : "";
+        if (!value || !dayjs.isDayjs(value)) {
+          return `${name.replace(/([A-Z])/g, " $1").toLowerCase()} is required`;
+        }
+        if (!value.isValid()) {
+          return `Invalid ${name.replace(/([A-Z])/g, " $1").toLowerCase()}`;
+        }
+        if (name === "closingTime" && formData.openingTime) {
+          if (value.isBefore(formData.openingTime)) {
+            return "Closing time must be after opening time";
+          }
+        }
+        return "";
 
       case "openingDate":
       case "openingDay":
@@ -187,12 +164,10 @@ const RegisterSellerForm = () => {
         return "";
     }
   };
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     const newValue = files ? files[0] : value;
 
-    // Validate word count before updating state
     if (name === "slogan" && newValue.trim().split(/\s+/).length > 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -246,14 +221,52 @@ const RegisterSellerForm = () => {
       const resultAction = await dispatch(registerSeller(formData));
 
       if (registerSeller.fulfilled.match(resultAction)) {
-        setFormData({});
-        navigate("/login");
+        const { email, password } = formData;
+        const loginResult = await dispatch(signInUser({ email, password }));
+        if (signInUser.fulfilled.match(loginResult)) {
+          const {
+            userId,
+            token,
+            email,
+            role,
+            name,
+            sellerId,
+            shopId,
+            shopName,
+            ownerName,
+          } = loginResult.payload;
+
+          dispatch(
+            setUser({
+              userId,
+              token,
+              email,
+              role,
+              name,
+              sellerId,
+              shopId,
+              shopName,
+              ownerName,
+            })
+          );
+          setFormData({});
+          navigate("/");
+        } else {
+          toast.error("Login failed. Please try again manually.");
+          navigate("/login");
+        }
       } else if (registerSeller.rejected.match(resultAction)) {
       }
     } catch (error) {
     } finally {
       setLoading(false);
     }
+  };
+  const handleTimeChange = (field) => (newValue) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: newValue,
+    }));
   };
 
   const togglePasswordVisibility = () => {
@@ -271,7 +284,6 @@ const RegisterSellerForm = () => {
         background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
       }}
     >
-      <GlobalNotification ref={notificationRef} />
       <Paper
         elevation={6}
         sx={{
@@ -282,6 +294,7 @@ const RegisterSellerForm = () => {
           borderRadius: 3,
           width: "100%",
           maxWidth: 800,
+          margin: "10px",
           boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
         }}
       >
@@ -582,43 +595,49 @@ const RegisterSellerForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                name="openingTime"
-                label="Opening Time (24-hour format)"
-                type="number"
-                InputProps={{
-                  inputProps: { min: 1, max: 24 },
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <FontAwesomeIcon icon={faClock} />
-                    </InputAdornment>
-                  ),
-                }}
+              <TimePicker
+                label="Opening Time"
                 value={formData.openingTime}
-                helperText={errors.openingTime}
-                error={!!errors.openingTime}
-                onChange={handleChange}
+                onChange={handleTimeChange("openingTime")}
+                ampm={false}
+                sx={{ width: "100%" }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!errors.openingTime,
+                    helperText: errors.openingTime,
+                    InputProps: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <FontAwesomeIcon icon={faClock} />
+                        </InputAdornment>
+                      ),
+                    },
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                name="closingTime"
-                label="Closing Time (24-hour format)"
-                type="number"
-                InputProps={{
-                  inputProps: { min: 1, max: 24 },
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <FontAwesomeIcon icon={faClock} />
-                    </InputAdornment>
-                  ),
-                }}
+              <TimePicker
+                label="Closing Time"
                 value={formData.closingTime}
-                helperText={errors.closingTime}
-                error={!!errors.closingTime}
-                onChange={handleChange}
+                onChange={handleTimeChange("closingTime")}
+                ampm={false}
+                sx={{ width: "100%" }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!errors.closingTime,
+                    helperText: errors.closingTime,
+                    InputProps: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <FontAwesomeIcon icon={faClock} />
+                        </InputAdornment>
+                      ),
+                    },
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

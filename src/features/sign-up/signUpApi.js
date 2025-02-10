@@ -1,4 +1,3 @@
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { postRequest } from "../../api/api";
 
 export const signUpAPI = async (userData) => {
