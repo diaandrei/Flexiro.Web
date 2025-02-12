@@ -28,8 +28,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getCartCount } from "../../features/cart/cartCountSlice";
-import { getCartSummary } from "./summaryApi";
-import { placeOrder, fetchAddress } from "./summaryApi";
+import { getCartSummary, placeOrder, fetchAddress } from "./summaryApi";
 import confetti from "canvas-confetti";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import axios from "axios";
@@ -40,20 +39,18 @@ export default function OrderSummary() {
   const [message, setMessage] = useState(null);
   const userId = localStorage.getItem("userId");
   const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
-  const [loading, setLoading] = React.useState(true);
-  const [cartSummary, setCartSummary] = React.useState(null);
+  const [loading, setLoading] = useState(true);
+  const [cartSummary, setCartSummary] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState({
     open: false,
     success: false,
   });
-
   const [openDialog, setOpenDialog] = useState(false);
-  const [snackbar, setSnackbar] = React.useState({
+  const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -67,11 +64,9 @@ export default function OrderSummary() {
     addToAddressBook: false,
     paymentMethod: "cod",
   });
-
   const [addressBook, setAddressBook] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [errors, setErrors] = useState({});
-
   const [orderConfirmation, setOrderConfirmation] = useState({
     open: false,
     orderId: null,
@@ -286,10 +281,12 @@ export default function OrderSummary() {
       </Box>
     );
   }
+
   const handleCloseConfirmation = () => {
     setOrderConfirmation({ open: false, orderId: null });
     navigate("/");
   };
+
   return (
     <Container maxWidth="xl" sx={{ py: 6 }}>
       <form onSubmit={handleSubmit}>
@@ -329,6 +326,7 @@ export default function OrderSummary() {
               </Select>
             </Box>
 
+            {/* Shipping Details Fields */}
             <Grid container spacing={3}>
               {[
                 { name: "firstName", label: "First Name" },
@@ -340,7 +338,7 @@ export default function OrderSummary() {
                 { name: "postcode", label: "Postcode" },
                 { name: "country", label: "Country" },
               ].map(({ name, label }) => (
-                <Grid item xs={12} sm={6}>
+                <Grid key={name} item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label={label}
@@ -375,7 +373,6 @@ export default function OrderSummary() {
                   }}
                 />
               </Grid>
-
               <Grid item xs={12}>
                 <FormControlLabel
                   control={

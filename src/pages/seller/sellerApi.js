@@ -64,7 +64,7 @@ export const updateSellerContactInfo = async (sellerId, email, phoneNumber) => {
     };
 
     const response = await axios.put(
-      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/UpdateSellerContactInfo`,
+      `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Account/UpdateSellerContactInfo`,
       sellerData
     );
 

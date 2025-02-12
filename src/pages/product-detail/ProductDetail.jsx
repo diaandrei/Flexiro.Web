@@ -109,7 +109,7 @@ export default function ProductDetail() {
     } finally {
       setTimeout(() => {
         setIsAddingToCart(false);
-      }, 2000);
+      }, 1000);
     }
   };
 
