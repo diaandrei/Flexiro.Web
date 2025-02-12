@@ -26,6 +26,9 @@ resources:
       name: diaandrei/Flexiro.Web
       ref: main
 
+variables:
+- group: PIPELINE_VAR
+
 stages:
   - stage: Build
     displayName: Build
