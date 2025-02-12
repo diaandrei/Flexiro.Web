@@ -24,8 +24,6 @@ class SignalRService {
                 this.onNotificationReceived(message);
             }
         });
-
-
     }
 
     stopConnection = () => {

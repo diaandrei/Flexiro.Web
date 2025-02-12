@@ -1,27 +1,27 @@
 import React from "react";
 import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
-import { useDispatch, userSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getCartCount } from "../../features/cart/cartCountSlice";
+import { clearCartitems } from "../../features/cart/cartApi";
 
 const UserMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
-  const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
-
   const isLoggedIn = Boolean(localStorage.getItem("token"));
 
   const handleLoginClick = () => {
     navigate("/login");
     handleClose();
   };
+
   const handleOrders = () => {
     navigate("/customerorders");
     handleClose();
   };
+
   const handleWishlist = () => {
     navigate("/wishlistproducts");
     handleClose();
@@ -30,29 +30,32 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
   const handleLogoutClick = async () => {
     try {
       if (userId) {
-        const response = await axios.post(
-          `https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/api/Customer/clearCart?userId=${userId}`
-        );
-
-        if (response.data.success) {
+        try {
+          await clearCartitems();
           dispatch(getCartCount(userId));
-        } else {
-        }
+        } catch (err) {}
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+
+    // Remove all user-related items from local storage.
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
     localStorage.removeItem("name");
     localStorage.removeItem("email");
+
     toast.success("Logged out successfully");
     navigate("/");
-
     handleClose();
   };
 
-  const handleRegisterClick = () => navigate("/signup");
+  const handleRegisterClick = () => {
+    navigate("/signup");
+    handleClose();
+  };
 
   return (
     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
@@ -91,6 +94,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
             </Typography>
           </MenuItem>
         )}
+
         {isLoggedIn && (
           <MenuItem
             onClick={handleOrders}
@@ -101,6 +105,7 @@ const UserMenu = ({ anchorEl, open, handleClose }) => {
             </Typography>
           </MenuItem>
         )}
+
         {isLoggedIn && (
           <MenuItem
             onClick={handleWishlist}

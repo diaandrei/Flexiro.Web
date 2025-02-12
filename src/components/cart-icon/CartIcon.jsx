@@ -17,24 +17,24 @@ const CartIcon = () => {
     }
 
     try {
-      const response = await axios.get(`/api/Customer/cart?userId=${guestId}`);
-      if (response.data && response.data.success && response.data.content) {
+      const response = await axios.get(`/api/Customer/cart?userId=${guestId}`, {
+        validateStatus: (status) => status >= 200 && status < 500,
+      });
+
+      if (response.status === 404) {
+      } else if (
+        response.data &&
+        response.data.success &&
+        response.data.content
+      ) {
         const dbGuestId =
           response.data.content.GuestUserId || response.data.content.UserId;
         if (dbGuestId && dbGuestId !== guestId) {
-          console.log(
-            "Updating guestId in local storage from",
-            guestId,
-            "to",
-            dbGuestId
-          );
           localStorage.setItem("guestId", dbGuestId);
           guestId = dbGuestId;
         }
       }
-    } catch (error) {
-      console.error("Error syncing guest id:", error);
-    }
+    } catch (error) {}
     return guestId;
   };
 

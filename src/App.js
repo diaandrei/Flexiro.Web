@@ -29,7 +29,6 @@ function App() {
         console.error("Error parsing user data from localStorage:", error);
       }
     } else {
-      console.warn("No user data found in localStorage");
     }
   }, [dispatch]);
   return (

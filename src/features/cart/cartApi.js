@@ -10,17 +10,23 @@ const ensureGuestIdSync = async () => {
   }
 
   try {
-    const response = await axios.get(`/api/Customer/cart?userId=${guestId}`);
-    if (response.data && response.data.success && response.data.content) {
+    const response = await axios.get(`/api/Customer/cart?userId=${guestId}`, {
+      validateStatus: status => status >= 200 && status < 500,
+    });
+    
+    if (
+      response.status !== 404 &&
+      response.data &&
+      response.data.success &&
+      response.data.content
+    ) {
       const dbGuestId = response.data.content.GuestUserId || response.data.content.UserId;
       if (dbGuestId && dbGuestId !== guestId) {
-        console.log("Updating guestId in local storage from", guestId, "to", dbGuestId);
         localStorage.setItem('guestId', dbGuestId);
         guestId = dbGuestId;
       }
     }
   } catch (error) {
-    console.error("Error syncing guest id:", error);
   }
   return guestId;
 };
@@ -55,12 +61,11 @@ export const addItemToCart = async (item) => {
     ],
     IsGuest: isGuest,
   };
+
   const response = await postRequest(`/customer/add-product-to-cart?userId=${currentId}`, requestPayload);
 
   if (response.request.status === 200) {
-    toast.success('Your item has been added to the cart.', {
-      duration: 2000,
-    });
+    toast.success('Your item has been added to the cart.', { duration: 2000 });
     return response.data;
   } else {
     toast.error(response.data.title);
@@ -95,7 +100,6 @@ export const updateCartItemQuantity = async (cartItemId, quantity) => {
       createdAt: response.data.data.createdAt,
       updatedAt: response.data.data.updatedAt
     };
-
     return responedata;
   } else {
     throw new Error(response.data.title);
@@ -104,8 +108,7 @@ export const updateCartItemQuantity = async (cartItemId, quantity) => {
 
 export const clearCartitems = async () => {
   const currentId = await getCurrentId();
-  const response = await postRequest(`/customer/clearCart`, { userId: currentId });
-
+  const response = await postRequest(`/customer/clearCart?userId=${currentId}`);
   if (response.data.success) {
     return response.data.content;
   } else {
@@ -114,11 +117,11 @@ export const clearCartitems = async () => {
 };
 
 export const transferGuestCartApi = async (guestId, userId) => {
-  const response = await postRequest('/Customer/transfer-guest-cart', {
-    guestId,
-    userId
-  });
-
+  const payload = { 
+    GuestId: guestId, 
+    UserId: userId 
+  };
+  const response = await postRequest('/Customer/transfer-guest-cart', payload);
   if (response.status === 200) {
     return response.data;
   } else {
