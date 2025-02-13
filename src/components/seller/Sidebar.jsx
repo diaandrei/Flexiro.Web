@@ -17,7 +17,6 @@ import { styled } from "@mui/material/styles";
 import { Link, useLocation } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ProductIcon from "@mui/icons-material/Store";
 import OrderIcon from "@mui/icons-material/Assignment";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -76,11 +75,6 @@ const Sidebar = () => {
     { text: "Dashboard", icon: <DashboardIcon />, path: "/seller/dashboard" },
     { text: "Products", icon: <ProductIcon />, path: "/seller/products" },
     { text: "Orders", icon: <OrderIcon />, path: "/seller/orders" },
-    {
-      text: "Wishlist",
-      icon: <FavoriteIcon />,
-      path: "/seller/wishlistproducts",
-    },
     { text: "Go Home", icon: <HomeIcon />, path: "/" },
   ];
 

@@ -7,10 +7,7 @@ import {
   faEye,
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  signInUser,
-  selectAuthError,
-} from "../../../features/sign-in/signInSlice";
+import { signInUser } from "../../../features/sign-in/signInSlice";
 import CustomLoader from "../../../CustomLoader";
 import GlobalNotification from "../../../GlobalNotification";
 import { useNavigate, Link } from "react-router-dom";
@@ -27,7 +24,6 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import toast from "react-hot-toast";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");

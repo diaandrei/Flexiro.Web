@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
@@ -17,13 +17,9 @@ import {
   Paper,
   InputAdornment,
 } from "@mui/material";
-import {
-  registerSeller,
-  selectAuthError,
-} from "../../features/registerSeller/registerSellerSlice";
+import { registerSeller } from "../../features/registerSeller/registerSellerSlice";
 import CustomLoader from "../../CustomLoader";
 import toast from "react-hot-toast";
-import enLocale from "date-fns/locale/en-US";
 import { signInUser } from "../../features/sign-in/signInSlice";
 import { setUser } from "../../features/user/userSlice";
 import dayjs from "dayjs";
@@ -96,19 +92,9 @@ const RegisterSellerForm = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const notificationRef = useRef();
-  const localeMap = {
-    en: enLocale,
-  };
-  const authError = useSelector(selectAuthError);
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [locale, setLocale] = React.useState("ru");
-  const [value, setValue] = React.useState(new Date());
-
-  const selectLocale = (newLocale) => {
-    setLocale(newLocale);
-  };
 
   const validateField = (name, value) => {
     const displayName = fieldLabels[name] || name;
@@ -749,7 +735,17 @@ const RegisterSellerForm = () => {
               <Button
                 variant="text"
                 onClick={() => navigate("/login")}
-                sx={{ textTransform: "none", padding: 0, color: "#F38E58" }}
+                sx={{
+                  textTransform: "none",
+                  padding: 0,
+                  color: "#F38E58",
+                  cursor: "pointer",
+                  transition: "color 0.3s ease",
+                  "&:hover": {
+                    color: "#e57c46",
+                    textDecoration: "underline",
+                  },
+                }}
               >
                 Sign In
               </Button>

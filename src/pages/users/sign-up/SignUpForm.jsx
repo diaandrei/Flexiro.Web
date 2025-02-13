@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
   faEnvelope,
-  faLock,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -19,10 +18,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  signUpUser,
-  selectAuthError,
-} from "../../../features/sign-up/signUpSlice";
+import { signUpUser } from "../../../features/sign-up/signUpSlice";
 import { signInUser } from "../../../features/sign-in/signInSlice";
 import CustomLoader from "../../../CustomLoader";
 import toast from "react-hot-toast";
@@ -38,9 +34,7 @@ const SignUpForm = () => {
   const [passwordError, setPasswordError] = useState("");
 
   const dispatch = useDispatch();
-  const notificationRef = useRef();
   const navigate = useNavigate();
-  const authError = useSelector(selectAuthError);
   const [loadingItems, setLoadingItems] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -184,7 +178,7 @@ const SignUpForm = () => {
           align="center"
           sx={{ mb: 3 }}
         >
-          Please follow the instructions to register and start exploring
+          Please follow the instructions to register
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>

@@ -23,7 +23,6 @@ import {
   useMediaQuery,
   useTheme,
   InputAdornment,
-  alpha,
 } from "@mui/material";
 import ProductCard from "./ShopCard";
 import { FaTh, FaList, FaSearch } from "react-icons/fa";
@@ -36,7 +35,6 @@ export default function ShopDetail() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const userId = localStorage.getItem("userId");
   const products = useSelector(selectShopProducts);
@@ -94,7 +92,7 @@ export default function ShopDetail() {
         minHeight="70vh"
       >
         <Typography variant="h4" gutterBottom>
-          No products available right now. Please check back later
+          No products available right now. Please check back later.
         </Typography>
         <Button
           variant="contained"
@@ -124,113 +122,197 @@ export default function ShopDetail() {
       }}
     >
       <GlobalNotification ref={notificationRef} />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-          mb: 4,
-          backgroundColor: "white",
-          borderRadius: "12px",
-          padding: "24px",
-          boxShadow:
-            "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            gap: 2,
-            alignItems: { xs: "stretch", sm: "center" },
-          }}
-        >
-          <TextField
-            label="Search Products"
-            variant="outlined"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            fullWidth={isMobile}
-            sx={{
-              flexGrow: 1,
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
-                backgroundColor: alpha(theme.palette.primary.main, 0.04),
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                },
-                "&.Mui-focused": {
-                  backgroundColor: "white",
-                  boxShadow: `0 0 0 2px ${alpha(
-                    theme.palette.primary.main,
-                    0.2
-                  )}`,
-                },
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <FaSearch color={theme.palette.text.secondary} />
-                </InputAdornment>
-              ),
-            }}
-          />
 
-          <FormControl
-            variant="outlined"
-            sx={{
-              minWidth: 160,
-              width: { xs: "100%", sm: "auto" },
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
-                backgroundColor: "white",
-                "&:hover": {
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: theme.palette.primary.main,
+      <Box sx={{ position: "relative", mb: 4 }}>
+        {isMobile ? (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <TextField
+              label="Search Products"
+              variant="outlined"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{
+                width: "90%",
+                mx: "auto",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "30px",
+                  backgroundColor: "#f5f5f5",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "#eeeeee",
+                    "& fieldset": { borderColor: "#757575" },
+                  },
+                  "&.Mui-focused": {
+                    backgroundColor: "white",
+                    boxShadow: "none",
+                    "& fieldset": { borderColor: "#757575" },
                   },
                 },
-              },
-            }}
-          >
-            <InputLabel>Sort By</InputLabel>
-            <Select
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-              label="Sort By"
-            >
-              <MenuItem value="Newest">Newest</MenuItem>
-              <MenuItem value="PriceLowHigh">Price: Low to High</MenuItem>
-              <MenuItem value="PriceHighLow">Price: High to Low</MenuItem>
-            </Select>
-          </FormControl>
-
-          {!isMobile && (
-            <Button
-              onClick={toggleViewType}
-              aria-label="Toggle view"
-              variant="outlined"
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FaSearch color="#757575" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+              <FormControl
+                variant="outlined"
+                sx={{
+                  width: "200px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "30px",
+                    backgroundColor: "white",
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#757575",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#757575",
+                    },
+                  },
+                }}
+              >
+                <InputLabel>Sort By</InputLabel>
+                <Select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value)}
+                  label="Sort By"
+                >
+                  <MenuItem value="Newest">Newest</MenuItem>
+                  <MenuItem value="PriceLowHigh">Price: Low to High</MenuItem>
+                  <MenuItem value="PriceHighLow">Price: High to Low</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                onClick={toggleViewType}
+                aria-label="Toggle view"
+                variant="outlined"
+                sx={{
+                  minWidth: "auto",
+                  p: 1.5,
+                  borderRadius: "30px",
+                  borderColor: "#757575",
+                  color: "#757575",
+                  backgroundColor: "white",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0",
+                    borderColor: "#757575",
+                  },
+                }}
+              >
+                {viewType === "grid" ? (
+                  <FaTh size={20} />
+                ) : (
+                  <FaList size={20} />
+                )}
+              </Button>
+            </Box>
+          </Box>
+        ) : (
+          <>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <TextField
+                label="Search Products"
+                variant="outlined"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                sx={{
+                  width: "400px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "30px",
+                    backgroundColor: "#f5f5f5",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: "#eeeeee",
+                      "& fieldset": { borderColor: "#757575" },
+                    },
+                    "&.Mui-focused": {
+                      backgroundColor: "white",
+                      boxShadow: "none",
+                      "& fieldset": { borderColor: "#757575" },
+                    },
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FaSearch color="#757575" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+            <Box
               sx={{
-                minWidth: "auto",
-                p: 1.5,
-                borderRadius: "8px",
-                borderColor: alpha(theme.palette.primary.main, 0.2),
-                color: theme.palette.primary.main,
-                backgroundColor: "white",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                  borderColor: theme.palette.primary.main,
-                },
+                position: "absolute",
+                right: 0,
+                top: "50%",
+                transform: "translateY(-50%)",
+                display: "flex",
+                gap: 2,
+                alignItems: "center",
               }}
             >
-              {viewType === "grid" ? <FaTh size={20} /> : <FaList size={20} />}
-            </Button>
-          )}
-        </Box>
+              <FormControl
+                variant="outlined"
+                sx={{
+                  width: "200px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "30px",
+                    backgroundColor: "white",
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#757575",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#757575",
+                    },
+                  },
+                }}
+              >
+                <InputLabel>Sort By</InputLabel>
+                <Select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value)}
+                  label="Sort By"
+                >
+                  <MenuItem value="Newest">Newest</MenuItem>
+                  <MenuItem value="PriceLowHigh">Price: Low to High</MenuItem>
+                  <MenuItem value="PriceHighLow">Price: High to Low</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                onClick={toggleViewType}
+                aria-label="Toggle view"
+                variant="outlined"
+                sx={{
+                  minWidth: "auto",
+                  p: 1.5,
+                  borderRadius: "30px",
+                  borderColor: "#757575",
+                  color: "#757575",
+                  backgroundColor: "white",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0",
+                    borderColor: "#757575",
+                  },
+                }}
+              >
+                {viewType === "grid" ? (
+                  <FaTh size={20} />
+                ) : (
+                  <FaList size={20} />
+                )}
+              </Button>
+            </Box>
+          </>
+        )}
       </Box>
-      <Grid container spacing={3}>
+
+      <Grid container spacing={3} sx={{ mt: 3 }}>
         {paginatedProducts.map((product) => (
           <Grid
             item
@@ -265,10 +347,10 @@ export default function ShopDetail() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
           mt: 6,
-          flexDirection: { xs: "column", sm: "row" },
           gap: 2,
           backgroundColor: "white",
           borderRadius: "12px",
@@ -285,37 +367,38 @@ export default function ShopDetail() {
             variant="outlined"
             shape="rounded"
             sx={{
-              "& .MuiPagination-ul": {
-                justifyContent: "center",
-              },
+              "& .MuiPagination-ul": { justifyContent: "center" },
               "& .MuiPaginationItem-root": {
                 borderRadius: "8px",
-                "&:hover": {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                },
+                "&:hover": { backgroundColor: "#f0f0f0" },
                 "&.Mui-selected": {
-                  backgroundColor: theme.palette.primary.main,
+                  backgroundColor: "#757575",
                   color: "white",
-                  "&:hover": {
-                    backgroundColor: theme.palette.primary.dark,
-                  },
+                  "&:hover": { backgroundColor: "#616161" },
                 },
               },
             }}
           />
         )}
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          sx={{
-            alignSelf: { xs: "center", sm: "flex-end" },
-            width: { xs: "100%", sm: "auto" },
-            textAlign: { xs: "center", sm: "right" },
-          }}
-        >
-          Viewing {paginatedProducts.length} of {filteredProducts.length}{" "}
-          products
-        </Typography>
+
+        {filteredProducts.length === 0 ? (
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            sx={{ width: "100%", textAlign: "center" }}
+          >
+            No items to show.
+          </Typography>
+        ) : (
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            sx={{ width: "100%", textAlign: "center" }}
+          >
+            Viewing {paginatedProducts.length} of {filteredProducts.length}{" "}
+            products
+          </Typography>
+        )}
       </Box>
     </Box>
   );

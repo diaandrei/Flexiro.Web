@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { getCartCount } from "../../features/cart/cartCountSlice";
 import {
@@ -24,9 +24,6 @@ import {
   Add as AddIcon,
   Remove as RemoveIcon,
   Delete as DeleteIcon,
-  Favorite as FavoriteIcon,
-  FavoriteBorder as FavoriteBorderIcon,
-  LocalOffer as CouponIcon,
 } from "@mui/icons-material";
 import {
   getCart,
@@ -48,12 +45,11 @@ export default function Checkout() {
 
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isCartEmpty, setIsCartEmpty] = useState(true);
   const userId = getCurrentId();
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [couponCode, setCouponCode] = useState("");
+  const [couponCode] = useState("");
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -82,11 +78,13 @@ export default function Checkout() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     if (userId) {
       dispatch(getCartCount(userId));
     }
   }, [userId, dispatch]);
+
   const handleQuantityChange = async (cartItemId, newQuantity) => {
     try {
       const currentId = getCurrentId();
@@ -109,7 +107,6 @@ export default function Checkout() {
           return {
             ...prevCart,
             items: updatedItems,
-
             subTotal: response.data.cart.itemsTotal,
             discount: response.data.cart.totalDiscount,
             totalAmount: response.data.cart.totalAmount,
@@ -130,7 +127,7 @@ export default function Checkout() {
   const handleRemoveItem = async (cartItemId) => {
     try {
       if (!cartItemId) {
-        toast.error("Plese select at least one product");
+        toast.error("Please select at least one product");
       }
       const currentId = getCurrentId();
       const response = await removeCartItem(cartItemId, currentId);
@@ -161,7 +158,6 @@ export default function Checkout() {
         if (userId) {
           dispatch(getCartCount(currentId));
         }
-      } else {
       }
     } catch (err) {}
   };
@@ -242,7 +238,6 @@ export default function Checkout() {
           color="primary"
           sx={{
             mt: 2,
-
             bgcolor: "#111827",
             color: "#fff",
           }}
@@ -265,9 +260,6 @@ export default function Checkout() {
               justifyContent="space-between"
               alignItems="center"
               mb={2}
-              sx={{
-                mb: 2,
-              }}
             >
               <FormControlLabel
                 control={
@@ -293,13 +285,7 @@ export default function Checkout() {
             </Box>
 
             {cart?.items.map((item) => (
-              <Card
-                key={item.cartItemId}
-                sx={{
-                  mb: 2,
-                  borderRadius: 4,
-                }}
-              >
+              <Card key={item.cartItemId} sx={{ mb: 2, borderRadius: 4 }}>
                 <CardContent
                   sx={{
                     "&:hover": {
@@ -324,7 +310,6 @@ export default function Checkout() {
                           width: 100,
                           height: 100,
                           objectFit: "cover",
-                          border: "1px  ",
                           borderRadius: 2,
                         }}
                       />
@@ -366,11 +351,7 @@ export default function Checkout() {
                           InputProps={{
                             readOnly: true,
                             disableUnderline: true,
-                            inputProps: {
-                              style: {
-                                textAlign: "center",
-                              },
-                            },
+                            inputProps: { style: { textAlign: "center" } },
                           }}
                           sx={{ width: 60, mx: 1 }}
                           variant="standard"
@@ -427,14 +408,7 @@ export default function Checkout() {
             </Typography>
 
             <Box my={3}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                mb={2}
-                sx={{
-                  "&:hover": {},
-                }}
-              >
+              <Box display="flex" justifyContent="space-between" mb={2}>
                 <Typography sx={{ fontWeight: 500 }}>Subtotal</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
                   £{cart.subTotal}
@@ -442,14 +416,7 @@ export default function Checkout() {
               </Box>
 
               {cart.discount > 0 && (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  mb={2}
-                  sx={{
-                    "&:hover": {},
-                  }}
-                >
+                <Box display="flex" justifyContent="space-between" mb={2}>
                   <Typography sx={{ fontWeight: 500 }}>Discount</Typography>
                   <Typography color="error" sx={{ fontWeight: 500 }}>
                     -£{cart.discount}
@@ -458,14 +425,7 @@ export default function Checkout() {
               )}
 
               {cart.shippingCost > 0 && (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  mb={2}
-                  sx={{
-                    "&:hover": {},
-                  }}
-                >
+                <Box display="flex" justifyContent="space-between" mb={2}>
                   <Typography sx={{ fontWeight: 500 }}>Shipping</Typography>
                   <Typography sx={{ fontWeight: 500 }}>
                     £{cart.shippingCost}
@@ -475,13 +435,7 @@ export default function Checkout() {
 
               <Divider sx={{ my: 3, borderColor: "#DDE2EB" }} />
 
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                sx={{
-                  "&:hover": {},
-                }}
-              >
+              <Box display="flex" justifyContent="space-between">
                 <Typography
                   variant="h6"
                   sx={{ fontWeight: "bold", color: "#333" }}
@@ -497,42 +451,53 @@ export default function Checkout() {
               </Box>
             </Box>
 
-            <Button
-              fullWidth
-              variant="contained"
-              size="large"
-              onClick={() => navigate("/order-summary")}
+            <Box
               sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
                 mt: 2,
-                backgroundColor: "#F38E58",
-                color: "white",
-                borderRadius: 2,
-                textTransform: "none",
-                fontWeight: "bold",
-                "&:hover": {
-                  backgroundColor: "#D97C49",
-                },
               }}
             >
-              Checkout
-            </Button>
-
-            <Button
-              fullWidth
-              variant="text"
-              onClick={() => navigate("/")}
-              sx={{
-                mt: 1,
-                color: "#262C36",
-                textTransform: "none",
-                fontWeight: 500,
-                "&:hover": {
-                  backgroundColor: "#F7F7F7",
-                },
-              }}
-            >
-              Continue Shopping
-            </Button>
+              <Button
+                variant="contained"
+                size="medium"
+                onClick={() => navigate("/order-summary")}
+                sx={{
+                  px: 4,
+                  py: 1,
+                  backgroundColor: "#F38E58",
+                  color: "white",
+                  borderRadius: "16px",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  "&:hover": {
+                    backgroundColor: "#D97C49",
+                  },
+                  width: "60%",
+                }}
+              >
+                Checkout
+              </Button>
+              <Button
+                variant="text"
+                onClick={() => navigate("/")}
+                sx={{
+                  mt: 1,
+                  color: "#262C36",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": {
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                Continue Shopping
+              </Button>
+            </Box>
           </Paper>
         </Grid>
       </Grid>

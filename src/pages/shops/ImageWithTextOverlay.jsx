@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
@@ -30,28 +24,21 @@ const ImageWithTextOverlay = ({ imageSrc, alt }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const scrollToHotProducts = () => {
-    const hotProductsSection = document.getElementById("hot-products");
-    if (hotProductsSection) {
-      hotProductsSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <Box
       sx={{
         position: "relative",
         width: "100%",
-        height: { xs: "50vh", sm: "60vh", md: "70vh" },
+        height: { xs: "50vh", sm: "55vh", md: "60vh" },
         overflow: "hidden",
       }}
     >
       <motion.img
         src={imageSrc}
         alt={alt}
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 10, ease: "easeOut" }}
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
         style={{
           width: "100%",
           height: "100%",
@@ -59,6 +46,7 @@ const ImageWithTextOverlay = ({ imageSrc, alt }) => {
           filter: "brightness(0.6)",
         }}
       />
+
       <Box
         sx={{
           position: "absolute",
@@ -75,18 +63,6 @@ const ImageWithTextOverlay = ({ imageSrc, alt }) => {
           padding: { xs: 2, sm: 4 },
         }}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <Typography
-            variant={isMobile ? "caption" : "h6"}
-            sx={{ color: "#F38E58", mb: 1, fontWeight: "normal" }}
-          >
-            Welcome to Our Marketplace
-          </Typography>
-        </motion.div>
         <Box sx={{ height: isMobile ? 60 : 70, mb: 2, mt: 1 }}>
           <AnimatePresence mode="wait">
             <motion.div
@@ -98,24 +74,19 @@ const ImageWithTextOverlay = ({ imageSrc, alt }) => {
             >
               <Typography
                 variant={isMobile ? "h6" : isTablet ? "h4" : "h3"}
-                sx={{ color: "white", fontWeight: "bold" }}
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
               >
                 {headings[currentHeading]}
               </Typography>
             </motion.div>
           </AnimatePresence>
         </Box>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        ></motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        ></motion.div>
       </Box>
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
