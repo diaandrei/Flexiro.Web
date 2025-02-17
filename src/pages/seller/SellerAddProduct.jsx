@@ -55,6 +55,10 @@ export default function SellerAddProduct() {
   });
 
   const theme = createTheme({
+    palette: {
+      primary: { main: "#f38e58" },
+      secondary: { main: "#e57c46" },
+    },
     components: {
       MuiRadio: {
         styleOverrides: {
@@ -138,7 +142,6 @@ export default function SellerAddProduct() {
       }));
     }
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -259,7 +262,6 @@ export default function SellerAddProduct() {
       ProductImages: newProductImages.slice(0, 5),
     }));
 
-    // Clear error when images are uploaded
     if (errors.ProductImages) {
       setErrors((prev) => ({ ...prev, ProductImages: "" }));
     }
@@ -281,404 +283,525 @@ export default function SellerAddProduct() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold" }}>
-        Add New Product
-      </Typography>
-
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-              Product Information
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Product Name"
-                  name="Name"
-                  value={formData.Name}
-                  onChange={handleChange}
-                  error={!!errors.Name}
-                  helperText={errors.Name}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth error={!!errors.categoryId} required>
-                  <InputLabel id="category-label">Product Category</InputLabel>
-                  <Select
-                    labelId="category-label"
-                    label="Product Category"
-                    name="categoryId"
-                    value={formData.categoryId}
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="lg" sx={{ py: 6, minHeight: "100vh" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            mb: 4,
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
+          Add New Product
+        </Typography>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={8}>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                mb: 4,
+                borderRadius: 2,
+                backgroundColor: "#fff",
+                boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  mb: 3,
+                  fontWeight: "bold",
+                  borderBottom: "1px solid #eee",
+                  pb: 1,
+                }}
+              >
+                Product Information
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Product Name"
+                    name="Name"
+                    value={formData.Name}
                     onChange={handleChange}
-                  >
-                    {loading ? (
-                      <MenuItem disabled>
-                        <CircularProgress size={20} /> Loading categories...
-                      </MenuItem>
-                    ) : categories.length > 0 ? (
-                      categories.map((category) => (
-                        <MenuItem key={category.id} value={category.id}>
-                          {category.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem disabled>No categories available</MenuItem>
-                    )}
-                  </Select>
-                  {errors.categoryId && (
-                    <Typography variant="caption" color="error">
-                      {errors.categoryId}
-                    </Typography>
-                  )}
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Paper>
-
-          <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-              Product Details
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Price per Item"
-                  name="price"
-                  type="number"
-                  value={formData.price}
-                  onChange={handleChange}
-                  placeholder="GBP"
-                  error={!!errors.price}
-                  helperText={errors.price}
-                  InputProps={{
-                    startAdornment: <Typography sx={{ mr: 1 }}>£</Typography>,
-                  }}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl component="fieldset">
-                  <Typography variant="subtitle2" sx={{}}>
-                    Product Condition
-                  </Typography>
-                  <ThemeProvider theme={theme}>
-                    <RadioGroup
-                      row
-                      name="ProductCondition"
-                      value={formData.ProductCondition}
+                    error={!!errors.Name}
+                    helperText={errors.Name}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth error={!!errors.categoryId} required>
+                    <InputLabel id="category-label">
+                      Product Category
+                    </InputLabel>
+                    <Select
+                      labelId="category-label"
+                      label="Product Category"
+                      name="categoryId"
+                      value={formData.categoryId}
                       onChange={handleChange}
                     >
-                      <FormControlLabel
-                        value="new"
-                        control={<Radio />}
-                        label="New"
-                      />
-                      <FormControlLabel
-                        value="secondhand"
-                        control={<Radio />}
-                        label="Used"
-                      />
-                    </RadioGroup>
-                  </ThemeProvider>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Weight"
-                  name="weight"
-                  type="number"
-                  value={formData.weight}
-                  onChange={handleChange}
-                  error={!!errors.weight}
-                  helperText={errors.weight}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Stock"
-                  name="Stock"
-                  type="number"
-                  value={formData.Stock}
-                  onChange={handleChange}
-                  error={!!errors.Stock}
-                  helperText={errors.Stock}
-                  InputProps={{
-                    endAdornment: <Typography sx={{ ml: 1 }}>Pcs</Typography>,
-                  }}
-                  required
-                />
-              </Grid>
-            </Grid>
-          </Paper>
-
-          <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-              Product Images
-            </Typography>
-            <Grid container spacing={2}>
-              {images.map((image, index) => (
-                <Grid item key={index} xs={6} sm={4} md={3}>
-                  <Card sx={{ position: "relative" }}>
-                    <img
-                      src={image}
-                      alt={`Product ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "150px",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <IconButton
-                      size="small"
-                      sx={{
-                        position: "absolute",
-                        top: 5,
-                        right: 5,
-                        bgcolor: "rgba(255,255,255,0.7)",
-                      }}
-                      onClick={() => handleRemoveImage(index)}
-                    >
-                      <X size={16} />
-                    </IconButton>
-                  </Card>
+                      {loading ? (
+                        <MenuItem disabled>
+                          <CircularProgress size={20} sx={{ mr: 1 }} /> Loading
+                          categories...
+                        </MenuItem>
+                      ) : categories.length > 0 ? (
+                        categories.map((category) => (
+                          <MenuItem key={category.id} value={category.id}>
+                            {category.name}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No categories available</MenuItem>
+                      )}
+                    </Select>
+                    {errors.categoryId && (
+                      <Typography variant="caption" color="error">
+                        {errors.categoryId}
+                      </Typography>
+                    )}
+                  </FormControl>
                 </Grid>
-              ))}
-            </Grid>
-            {images.length < 5 && (
-              <Button
-                component="label"
-                variant="outlined"
+              </Grid>
+            </Paper>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                mb: 4,
+                borderRadius: 2,
+                backgroundColor: "#fff",
+                boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Typography
+                variant="h6"
                 sx={{
-                  mt: 2,
+                  mb: 3,
+                  fontWeight: "bold",
+                  borderBottom: "1px solid #eee",
+                  pb: 1,
+                }}
+              >
+                Product Details
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Price per Item"
+                    name="price"
+                    type="number"
+                    value={formData.price}
+                    onChange={handleChange}
+                    placeholder="GBP"
+                    error={!!errors.price}
+                    helperText={errors.price}
+                    InputProps={{
+                      startAdornment: (
+                        <Typography sx={{ mr: 1, fontWeight: "bold" }}>
+                          £
+                        </Typography>
+                      ),
+                    }}
+                    required
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <FormControl component="fieldset">
+                    <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                      Product Condition
+                    </Typography>
+                    <ThemeProvider theme={theme}>
+                      <RadioGroup
+                        row
+                        name="ProductCondition"
+                        value={formData.ProductCondition}
+                        onChange={handleChange}
+                      >
+                        <FormControlLabel
+                          value="new"
+                          control={<Radio />}
+                          label="New"
+                        />
+                        <FormControlLabel
+                          value="secondhand"
+                          control={<Radio />}
+                          label="Used"
+                        />
+                      </RadioGroup>
+                    </ThemeProvider>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Weight"
+                    name="weight"
+                    type="number"
+                    value={formData.weight}
+                    onChange={handleChange}
+                    error={!!errors.weight}
+                    helperText={errors.weight}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Stock"
+                    name="Stock"
+                    type="number"
+                    value={formData.Stock}
+                    onChange={handleChange}
+                    error={!!errors.Stock}
+                    helperText={errors.Stock}
+                    InputProps={{
+                      endAdornment: (
+                        <Typography sx={{ ml: 1, fontWeight: "bold" }}>
+                          Pcs
+                        </Typography>
+                      ),
+                    }}
+                    required
+                  />
+                </Grid>
+              </Grid>
+            </Paper>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                mb: 4,
+                borderRadius: 2,
+                backgroundColor: "#fff",
+                boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  mb: 3,
+                  fontWeight: "bold",
+                  borderBottom: "1px solid #eee",
+                  pb: 1,
+                }}
+              >
+                Product Images
+              </Typography>
+              <Grid container spacing={2}>
+                {images.map((image, index) => (
+                  <Grid item key={index} xs={6} sm={4} md={3}>
+                    <Card
+                      sx={{
+                        position: "relative",
+                        borderRadius: 1,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`Product ${index + 1}`}
+                        style={{
+                          width: "100%",
+                          height: "150px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <IconButton
+                        size="small"
+                        sx={{
+                          position: "absolute",
+                          top: 5,
+                          right: 5,
+                          bgcolor: "rgba(255,255,255,0.8)",
+                        }}
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        <X size={16} />
+                      </IconButton>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+              {images.length < 5 && (
+                <Button
+                  component="label"
+                  variant="outlined"
+                  sx={{
+                    mt: 2,
+                    bgcolor: "white",
+                    color: "#f38e58",
+                    borderColor: "#f38e58",
+                    "&:hover": { bgcolor: "#f38e58", color: "white" },
+                  }}
+                >
+                  Upload Image
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    multiple
+                    onChange={handleImageUpload}
+                  />
+                </Button>
+              )}
+              {errors.ProductImages && (
+                <Typography
+                  variant="caption"
+                  color="error"
+                  sx={{ display: "block", mt: 1 }}
+                >
+                  {errors.ProductImages}
+                </Typography>
+              )}
+            </Paper>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                mb: 4,
+                borderRadius: 2,
+                backgroundColor: "#fff",
+                boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  mb: 3,
+                  fontWeight: "bold",
+                  borderBottom: "1px solid #eee",
+                  pb: 1,
+                }}
+              >
+                Product Description
+              </Typography>
+              <Box sx={{ mb: 2 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 1,
+                    mb: 1,
+                    bgcolor: "grey.100",
+                    p: 1,
+                    borderRadius: 1,
+                  }}
+                >
+                  {[
+                    {
+                      icon: Bold,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          isBold: !prev.isBold,
+                        })),
+                    },
+                    {
+                      icon: Italic,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          isItalic: !prev.isItalic,
+                        })),
+                    },
+                    {
+                      icon: Underline,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          isUnderline: !prev.isUnderline,
+                        })),
+                    },
+                    {
+                      icon: AlignLeft,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          alignment: "left",
+                        })),
+                    },
+                    {
+                      icon: AlignCenter,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          alignment: "center",
+                        })),
+                    },
+                    {
+                      icon: AlignRight,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          alignment: "right",
+                        })),
+                    },
+                    {
+                      icon: AlignJustify,
+                      action: () =>
+                        setTextFormatting((prev) => ({
+                          ...prev,
+                          alignment: "justify",
+                        })),
+                    },
+                  ].map((item, index) => (
+                    <IconButton key={index} onClick={item.action} sx={{ p: 1 }}>
+                      <item.icon size={16} />
+                    </IconButton>
+                  ))}
+                </Box>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={5}
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  placeholder="Describe your product (max 40 words)..."
+                  sx={{
+                    bgcolor: "background.paper",
+                    textAlign: textFormatting.alignment,
+                    fontWeight: textFormatting.isBold ? "bold" : "normal",
+                    fontStyle: textFormatting.isItalic ? "italic" : "normal",
+                    textDecoration: textFormatting.isUnderline
+                      ? "underline"
+                      : "none",
+                  }}
+                  error={!!errors.description}
+                  helperText={errors.description || `${wordCount}/40 words`}
+                  required
+                />
+              </Box>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 4,
+                mb: 4,
+                borderRadius: 2,
+                backgroundColor: "#fff",
+                boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  mb: 3,
+                  fontWeight: "bold",
+                  borderBottom: "1px solid #eee",
+                  pb: 1,
+                }}
+              >
+                Product Grouping
+              </Typography>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                  Tags
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 1,
+                    mb: 2,
+                  }}
+                >
+                  {formData.tags.map((tag, index) => (
+                    <Chip
+                      key={index}
+                      label={tag}
+                      onDelete={() => handleDeleteTag(tag)}
+                      sx={{
+                        color: "#f38e58",
+                        borderColor: "#f38e58",
+                      }}
+                      variant="outlined"
+                    />
+                  ))}
+                </Box>
+                <TextField
+                  fullWidth
+                  label="Add Tag"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleAddTag}
+                  placeholder="Press Enter to add"
+                  error={!!errors.tags}
+                  helperText={errors.tags}
+                />
+              </Box>
+              <Box sx={{ mb: 3 }}>
+                <TextField
+                  fullWidth
+                  label="SKU"
+                  name="sku"
+                  value={formData.sku}
+                  onChange={handleChange}
+                  placeholder="Input Here"
+                  error={!!errors.sku}
+                  helperText={errors.sku}
+                  required
+                />
+              </Box>
+            </Paper>
+
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={() => handleSell(true)}
+                sx={{
                   bgcolor: "white",
                   color: "#f38e58",
                   borderColor: "#f38e58",
                   "&:hover": { bgcolor: "#f38e58", color: "white" },
                 }}
               >
-                Upload Image
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  multiple
-                  onChange={handleImageUpload}
-                />
+                Save as Draft
               </Button>
-            )}
-            {errors.ProductImages && (
-              <Typography
-                variant="caption"
-                color="error"
-                sx={{ display: "block", mt: 1 }}
-              >
-                {errors.ProductImages}
-              </Typography>
-            )}
-          </Paper>
-
-          <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-              Product Description
-            </Typography>
-            <Box sx={{ mb: 2 }}>
-              <Box
+              <Button
+                variant="contained"
+                onClick={() => handleSell(false)}
                 sx={{
-                  display: "flex",
-                  gap: 1,
-                  mb: 1,
-                  bgcolor: "grey.100",
-                  p: 1,
-                  borderRadius: 1,
+                  bgcolor: "#f38e58",
+                  "&:hover": { bgcolor: "#e57c46" },
                 }}
               >
-                {[
-                  {
-                    icon: Bold,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        isBold: !prev.isBold,
-                      })),
-                  },
-                  {
-                    icon: Italic,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        isItalic: !prev.isItalic,
-                      })),
-                  },
-                  {
-                    icon: Underline,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        isUnderline: !prev.isUnderline,
-                      })),
-                  },
-                  {
-                    icon: AlignLeft,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        alignment: "left",
-                      })),
-                  },
-                  {
-                    icon: AlignCenter,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        alignment: "center",
-                      })),
-                  },
-                  {
-                    icon: AlignRight,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        alignment: "right",
-                      })),
-                  },
-                  {
-                    icon: AlignJustify,
-                    action: () =>
-                      setTextFormatting((prev) => ({
-                        ...prev,
-                        alignment: "justify",
-                      })),
-                  },
-                ].map((item, index) => (
-                  <IconButton key={index} onClick={item.action} sx={{ p: 1 }}>
-                    <item.icon size={16} />
-                  </IconButton>
-                ))}
-              </Box>
-              <TextField
-                fullWidth
-                multiline
-                rows={5}
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                placeholder="Describe your product (max 40 words)..."
-                sx={{
-                  bgcolor: "background.paper",
-                  textAlign: textFormatting.alignment,
-                  fontWeight: textFormatting.isBold ? "bold" : "normal",
-                  fontStyle: textFormatting.isItalic ? "italic" : "normal",
-                  textDecoration: textFormatting.isUnderline
-                    ? "underline"
-                    : "none",
-                }}
-                error={!!errors.description}
-                helperText={errors.description || `${wordCount}/40 words`}
-                required
-              />
+                Publish Product
+              </Button>
             </Box>
-          </Paper>
+          </Grid>
         </Grid>
 
-        <Grid item xs={12} md={4}>
-          <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-              Product Grouping
-            </Typography>
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                Tags
-              </Typography>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
-                {formData.tags.map((tag, index) => (
-                  <Chip
-                    key={index}
-                    label={tag}
-                    onDelete={() => handleDeleteTag(tag)}
-                    sx={{
-                      color: "#f38e58",
-                      borderColor: "#f38e58",
-                    }}
-                    variant="outlined"
-                  />
-                ))}
-              </Box>
-              <TextField
-                fullWidth
-                label="Add Tag"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={handleAddTag}
-                placeholder="Press Enter to add"
-                error={!!errors.tags}
-                helperText={errors.tags}
-              />
-            </Box>
-            <Box sx={{ mb: 2 }}>
-              <TextField
-                fullWidth
-                label="SKU"
-                name="sku"
-                value={formData.sku}
-                onChange={handleChange}
-                placeholder="Input Here"
-                error={!!errors.sku}
-                helperText={errors.sku}
-                required
-              />
-            </Box>
-          </Paper>
-
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 3 }}>
-            <Button
-              variant="outlined"
-              onClick={() => handleSell(true)}
-              sx={{
-                bgcolor: "white",
-                color: "#f38e58",
-                borderColor: "#f38e58",
-                "&:hover": { bgcolor: "#f38e58", color: "white" },
-              }}
-            >
-              Save as Draft
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => handleSell(false)}
-              sx={{
-                bgcolor: "#f38e58",
-                "&:hover": { bgcolor: "#e57c46" },
-              }}
-            >
-              Publish Product
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-      >
-        <Alert
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
           onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          sx={{ width: "100%" }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Container>
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            sx={{ width: "100%" }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Container>
+    </ThemeProvider>
   );
 }
