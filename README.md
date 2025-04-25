@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+# Flexiro Front-End
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive single-page application (SPA) built with React for small businesses seeking an affordable yet feature-rich e-commerce solution. This frontend client communicates with the ASP.NET backend to deliver a seamless shopping experience for both business owners and customers.
 
-## Available Scripts
+## Architecture Overview
 
-In the project directory, you can run:
+The frontend follows a component-based architecture to ensure maintainability, reusability, and a consistent user experience:
 
-### `npm start`
+### Structure
+- **Component-Based Design**: Modular UI components for reusability and maintainability
+- **State Management**: Redux for global state with Context API for component-specific state
+- **Routing**: Client-side routing with React Router for a seamless SPA experience
+- **Services Layer**: API integration services that handle backend communication
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Responsive Design**: Works across desktop, tablet, and mobile devices
+- **Product Browsing**: Advanced filtering, sorting, and search capabilities
+- **Shopping Cart**: Dynamic cart management with real-time updates
+- **User Authentication**: Secure login, registration, and profile management
+- **Seller Dashboard**: Comprehensive tools for sellers to manage products and orders
+- **Real-time Notifications**: Instant updates on order status and other events
+- **Payment Integration**: Secure checkout process with Braintree payment gateway
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Framework**: React with Hooks
+- **State Management**: Redux + Context API
+- **Routing**: React Router
+- **Styling**: Tailwind CSS with responsive design principles
+- **HTTP Client**: Axios for API communication
+- **Real-time Updates**: SignalR client
+- **Authentication**: JWT token management
+- **Deployment**: Azure App Services
+- **CI/CD**: Automated build and deployment pipeline
 
-### `npm run build`
+## Live Demo
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Deployed Application
+- **Frontend Application**: [Live platform](https://flexiroweb-h3g0fvfkdbhcdvgk.uksouth-01.azurewebsites.net)
+- **API Endpoints**: [API Endpoints](https://flexiroapi-d7akfuaug8d7esdg.uksouth-01.azurewebsites.net/swagger/index.html)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Using the Platform
+1. Visit the frontend application link
+2. Browse products and navigate the platform without an account
+3. To complete the checkout process, you'll need to register for an account
+4. For seller registration, please note that admin approval is required before your shop will be displayed on the main screen
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Testing Payments
+For testing payment functionality, you can use any of the following test cards:
 
-### `npm run eject`
+- **Visa**: 4111 1111 1111 1111
+- **Mastercard**: 5555 5555 5555 4444
+- **Maestro**: 5018 0000 0009
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Use any future expiration date for successful test payments.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+For more test card options, please refer to the [Braintree Testing Documentation](https://developer.paypal.com/braintree/docs/guides/credit-cards/testing-go-live/php)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Getting Started
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Prerequisites
+- Node.js (v16.x or later)
+- npm or yarn
+- Access to the Flexiro backend API
 
-## Learn More
+### Installation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Clone the repository:
+   ```bash
+   git clone
+   cd Flexiro.Web
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-### Code Splitting
+3. Start the development server:
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
+   The application will be available at `http://localhost:3000`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Key Features
 
-### Analyzing the Bundle Size
+### User Experience
+- **Intuitive Navigation**: Clear product categorization and search functionality
+- **Fast Page Loading**: Optimized assets and code splitting for performance
+- **Responsive Design**: Adapts to all device sizes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Buyer Features
+- **Product Discovery**: Browse, search, and filter products by category, price, etc.
+- **Shopping Cart**: Add, remove, and manage items with quantity control
+- **User Accounts**: Register, login, and manage personal information
+- **Order History**: View and track past and current orders
+- **Wishlists**: Save products for future purchase
 
-### Making a Progressive Web App
+### Seller Features
+- **Product Management**: Add, edit, and remove products
+- **Inventory Control**: Manage stock levels and product availability
+- **Order Processing**: View and update order statuses
+- **Shop Customization**: Personalize shop appearance and details
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Security
 
-### Advanced Configuration
+- **Secure Authentication**: JWT token management with secure storage
+- **Protected Routes**: Role-based access control for pages and features
+- **Form Validation**: Client-side validation
+- **Secure Communication**: HTTPS for all API communication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Deployment
 
-### Deployment
+### Building for Production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm run build
+# or
+yarn build
+```
 
-### `npm run build` fails to minify
+This creates optimized production files in the `build` directory.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Azure Deployment
+
+1. Build the production bundle
+2. Deploy to Azure App Service using GitHub Actions CI/CD pipeline
+3. Configure environment variables in Azure App Service
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -m 'Add feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Submit a pull request
